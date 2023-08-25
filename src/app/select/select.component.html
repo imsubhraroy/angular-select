@@ -1,38 +1,53 @@
-<div class="w-56 m-10 relative" [class]="className">
-  <div class="container w-full h-8 flex items-center relative" (click)="show()">
+<div class="w-full relative" [class]="className">
+  <div class="w-full flex items-center relative" (click)="show()">
     <input
       type="text"
       placeholder="Search ...."
-      class="select-value focus:outline-0 px-2 rounded-md border-2 w-full h-10"
-      [class]="isReadOnly ? 'cursor-pointer':''"
+      class="focus:outline-0 px-2 rounded-md border-2 w-full pr-10 h-10 whitespace-nowrap overflow-ellipsis overflow-hidden"
+      [class.cursor-pointer]="isReadOnly"
       [(ngModel)]="inputValue"
       [readonly]="isReadOnly"
       (input)="setSearch()"
-      />
-      <div *ngIf="isDropDown; else beforeFocus" class="absolute right-2 cursor-pointer mt-1.5" [class.hidden]="!searchVisible">
-        <span *ngIf="isClear; else dropUp" class="text-[22px] font-bold text-gray-500" (click)="clearValue()" ><ng-icon name="bootstrapX"></ng-icon></span>
-        <ng-template #dropUp>
-          <span class="text-gray-500" ><ng-icon name="bootstrapCaretUpFill"></ng-icon></span>
-        </ng-template>
-      </div>
-      <ng-template #beforeFocus>
-        <div  class="absolute right-2 mt-1.5">
-          <span class="text-gray-500" ><ng-icon name="bootstrapCaretDownFill"></ng-icon></span>
-        </div>
+      [class]="height"
+    />
+    <div
+      *ngIf="isDropDown; else beforeFocus"
+      class="absolute right-2 cursor-pointer mt-1.5"
+      [class.hidden]="!searchVisible"
+    >
+      <span
+        *ngIf="isClear; else dropUp"
+        class="text-[22px] font-bold text-gray-500"
+        (click)="clearValue()"
+        ><ng-icon name="bootstrapX"></ng-icon
+      ></span>
+      <ng-template #dropUp>
+        <span class="text-gray-500"
+          ><ng-icon name="bootstrapCaretUpFill"></ng-icon
+        ></span>
       </ng-template>
+    </div>
+    <ng-template #beforeFocus>
+      <div class="absolute right-2 mt-1.5">
+        <span class="text-gray-500"
+          ><ng-icon name="bootstrapCaretDownFill"></ng-icon
+        ></span>
+      </div>
+    </ng-template>
   </div>
 
   <div
-    class="main w-full border-2 overflow-y-auto bg-white max-h-60 absolute border-t-0 transition ease-in-out"
-    [class]="searchVisible ? 'rounded-b-md' : 'border-b-0 '"
+    class="w-full overflow-y-auto bg-white max-h-60 absolute mt-1 transition ease-in-out"
+    [class]="searchVisible ? 'border-2 rounded-md' : 'border-0'"
   >
     <div class="search" [class.hidden]="!searchVisible">
-      <div class="scrollable-container overflow-y-auto">
+      <div class="overflow-y-auto">
         <ul id="list" class="list-none my-3">
           <li
             *ngFor="let item of data"
             (click)="setData($event)"
-            class="py-1 px-2 text-black hover:text-white hover:bg-blue-500 cursor-pointer rounded-sm"
+            [class.whitespace-nowrap]="optionLineBreack"
+            class="py-1 px-2 text-black hover:text-white hover:bg-blue-500 cursor-pointer rounded-sm overflow-ellipsis overflow-hidden"
             [class]="item === inputValue ? 'bg-blue-500 text-white' : ''"
             [style.display]="
               item.toUpperCase().includes(inputText.toUpperCase())
@@ -42,12 +57,7 @@
           >
             {{ item }}
           </li>
-          <li
-            class="not-found px-2"
-            [class.hidden]="hasFilteredItems()"
-          >
-            No Data
-          </li>
+          <li class="px-2" [class.hidden]="hasFilteredItems()">No Data</li>
         </ul>
       </div>
     </div>

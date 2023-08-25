@@ -12,6 +12,8 @@ export class SelectComponent {
   @Input() className!: string;
   @Input() isReadOnly: boolean = false;
   @Input() isClear: boolean = true;
+  @Input() height!: string;
+  @Input() optionLineBreack: boolean = true;
   @Input() setValue!: (parameter: any) => void;
 
   isDropDown: boolean = false
@@ -28,6 +30,7 @@ export class SelectComponent {
 
   setSearch() {
     this.inputText = this.inputValue;
+    this.searchVisible = true;
   }
 
   hasFilteredItems() {
