@@ -8,12 +8,14 @@ import { SelectComponent } from './select/select.component';
 import { FormsModule } from '@angular/forms';
 import { NgIconsModule } from '@ng-icons/core';
 import { bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill } from '@ng-icons/bootstrap-icons';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SelectComponent
+    SelectComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
