@@ -1,0 +1,51 @@
+<div class="w-56 m-10 relative" [class]="className">
+  <div class="container w-full h-8 flex items-center relative" (click)="show()">
+    <input
+      type="text"
+      placeholder="Search ...."
+      class="select-value focus:outline-0 px-2 rounded-md border-2 w-full h-10"
+      [(ngModel)]="inputValue"
+      [readonly]="isReadOnly"
+      (input)="setSearch()"
+      />
+      <div *ngIf="isDropDown; else beforeFocus" class="absolute right-2 cursor-pointer mt-1.5" [class.hidden]="!searchVisible">
+        <span class="text-[22px] font-bold text-gray-500" (click)="clearValue()" ><ng-icon name="bootstrapX"></ng-icon></span>
+      </div>
+      <ng-template #beforeFocus>
+        <div  class="absolute right-2 mt-1.5">
+          <span class="text-gray-500" ><ng-icon name="bootstrapCaretDownFill"></ng-icon></span>
+        </div>
+      </ng-template>
+  </div>
+
+  <div
+    class="main w-full border-2 overflow-y-auto bg-white max-h-72 absolute border-t-0 transition ease-in-out"
+    [class]="searchVisible ? 'rounded-b-md' : 'border-b-0 '"
+  >
+    <div class="search" [class.hidden]="!searchVisible">
+      <div class="scrollable-container overflow-y-auto">
+        <ul id="list" class="list-none my-3">
+          <li
+            *ngFor="let item of data"
+            (click)="setData($event)"
+            class="py-1 px-2 text-black hover:text-white hover:bg-blue-500 cursor-pointer rounded-sm"
+            [class]="item === inputValue ? 'bg-blue-500 text-white' : ''"
+            [style.display]="
+              item.toUpperCase().includes(inputText.toUpperCase())
+                ? 'block'
+                : 'none'
+            "
+          >
+            {{ item }}
+          </li>
+          <li
+            class="not-found px-2"
+            [class.hidden]="hasFilteredItems()"
+          >
+            No Data
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

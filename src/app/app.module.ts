@@ -3,14 +3,23 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { SelectComponent } from './select/select.component';
+import { FormsModule } from '@angular/forms';
+import { NgIconsModule } from '@ng-icons/core';
+import { bootstrapCaretDownFill, bootstrapX } from '@ng-icons/bootstrap-icons';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    SelectComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    NgIconsModule.withIcons({ bootstrapCaretDownFill, bootstrapX })
   ],
   providers: [],
   bootstrap: [AppComponent]
