@@ -1,0 +1,2 @@
+1. npm install
+2. npm install @ng-icons/core @ng-icons/bootstrap-icons
