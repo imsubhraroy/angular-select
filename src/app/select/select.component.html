@@ -4,6 +4,7 @@
       type="text"
       placeholder="Search ...."
       class="select-value focus:outline-0 px-2 rounded-md border-2 w-full h-10"
+      [class]="isReadOnly ? 'cursor-pointer':''"
       [(ngModel)]="inputValue"
       [readonly]="isReadOnly"
       (input)="setSearch()"
@@ -22,7 +23,7 @@
   </div>
 
   <div
-    class="main w-full border-2 overflow-y-auto bg-white max-h-72 absolute border-t-0 transition ease-in-out"
+    class="main w-full border-2 overflow-y-auto bg-white max-h-60 absolute border-t-0 transition ease-in-out"
     [class]="searchVisible ? 'rounded-b-md' : 'border-b-0 '"
   >
     <div class="search" [class.hidden]="!searchVisible">

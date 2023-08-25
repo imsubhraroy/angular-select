@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
-  defaultValue: any = '+91';
-  data: any[] = ['+91','+96','+63','+35','+695'];
+  defaultValue: any = 'Subhra Roy';
+  data: any[] = ["Subhra Roy", "Sandipan Kundu","Rizwan Ansari","Sushanto Karmakar","Suman Biswas","Rahul Gandhi","Norandro Modi","Rabindranath Tagore","Netaji Subhas Chandra Bose","Binoy","Badal","Dinesh"];
   selectValue!: any;
   className: string = "";
   isReadOnly: boolean = false;
