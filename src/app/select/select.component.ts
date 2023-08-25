@@ -11,6 +11,7 @@ export class SelectComponent {
   @Input() data: any[] = [];
   @Input() className!: string;
   @Input() isReadOnly: boolean = false;
+  @Input() isClear: boolean = true;
   @Input() setValue!: (parameter: any) => void;
 
   isDropDown: boolean = false

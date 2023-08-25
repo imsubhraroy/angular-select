@@ -7,7 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { SelectComponent } from './select/select.component';
 import { FormsModule } from '@angular/forms';
 import { NgIconsModule } from '@ng-icons/core';
-import { bootstrapCaretDownFill, bootstrapX } from '@ng-icons/bootstrap-icons';
+import { bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill } from '@ng-icons/bootstrap-icons';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { bootstrapCaretDownFill, bootstrapX } from '@ng-icons/bootstrap-icons';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    NgIconsModule.withIcons({ bootstrapCaretDownFill, bootstrapX })
+    NgIconsModule.withIcons({ bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill })
   ],
   providers: [],
   bootstrap: [AppComponent]

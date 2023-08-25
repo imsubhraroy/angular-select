@@ -8,10 +8,11 @@ import { Component } from '@angular/core';
 export class HomeComponent {
 
   defaultValue: any = '+91';
-  data: any[] = ['+91','+38','+95','+59'];
+  data: any[] = ['+91','+96','+63','+35','+695'];
   selectValue!: any;
-  className: string = ""
-  isReadOnly: boolean = true;
+  className: string = "";
+  isReadOnly: boolean = false;
+  isClear: boolean = true;
 
   setValue(value: any) {
     this.selectValue = value;

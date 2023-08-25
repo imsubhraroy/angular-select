@@ -9,7 +9,10 @@
       (input)="setSearch()"
       />
       <div *ngIf="isDropDown; else beforeFocus" class="absolute right-2 cursor-pointer mt-1.5" [class.hidden]="!searchVisible">
-        <span class="text-[22px] font-bold text-gray-500" (click)="clearValue()" ><ng-icon name="bootstrapX"></ng-icon></span>
+        <span *ngIf="isClear; else dropUp" class="text-[22px] font-bold text-gray-500" (click)="clearValue()" ><ng-icon name="bootstrapX"></ng-icon></span>
+        <ng-template #dropUp>
+          <span class="text-gray-500" ><ng-icon name="bootstrapCaretUpFill"></ng-icon></span>
+        </ng-template>
       </div>
       <ng-template #beforeFocus>
         <div  class="absolute right-2 mt-1.5">
