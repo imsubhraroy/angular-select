@@ -3,7 +3,7 @@
     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden border-2">
         <div class="p-4 px-4 flex items-center justify-between text-xl">
-          <span>Table Heading</span>
+          <span>{{ tableHeading }}</span>
           <input
             class="border-2 h-10 pl-3 rounded-md focus:outline-2 text-sm focus:outline-blue-500"
             type="text"
@@ -23,29 +23,38 @@
                   scope="col"
                   class="p-3 text-sm font-semibold tracking-wide text-left whitespace-nowrap overflow-hidden"
                 >
-                  <div class="flex items-center justify-start gap-1">
-                    <span
-                      class="pr-1 overflow-ellipsis overflow-hidden w-10"
-                      [class]="head.width"
-                    >
+                  <div
+                    class="flex items-center justify-start gap-1"
+                    [style.width]="head.width"
+                  >
+                    <span class="pr-1 overflow-ellipsis overflow-hidden">
                       {{ head.name }}
                     </span>
-                    <span
-                      *ngIf="head.isSort"
-                      class="text-gray-500 mt-1 pl-0.5 cursor-pointer"
-                      (click)="toggleSort(head.row)"
+                    <div
+                      class="flex items-center justify-start gap-1"
+                      *ngIf="head.isSort || head.isSearch"
                     >
-                      <ng-icon name="bootstrapCaretDownFill"></ng-icon>
-                    </span>
-                    <div class="w-0.5 bg-gray-600 h-4"></div>
-                    <span
-                      class="text-[12px] text-gray-900 font-bold cursor-pointer"
-                    >
-                      <ng-icon
-                        name="bootstrapSearch"
-                        (click)="setSearchValue(head.row)"
-                      ></ng-icon
-                    ></span>
+                      <span
+                        *ngIf="head.isSort"
+                        class="text-gray-500 mt-1 pl-0.5 cursor-pointer"
+                        (click)="toggleSort(head.row)"
+                      >
+                        <ng-icon name="bootstrapCaretDownFill"></ng-icon>
+                      </span>
+                      <div
+                        *ngIf="head.isSearch && head.isSort"
+                        class="w-0.5 bg-gray-600 h-4"
+                      ></div>
+                      <span
+                        *ngIf="head.isSearch"
+                        class="text-[12px] text-gray-900 font-bold cursor-pointer mt-1"
+                      >
+                        <ng-icon
+                          name="bootstrapSearch"
+                          (click)="setSearchValue(head.row)"
+                        ></ng-icon
+                      ></span>
+                    </div>
                   </div>
                 </th>
               </tr>
@@ -60,12 +69,18 @@
                   class="p-3 text-sm text-gray-700"
                 >
                   <div
-                    class="whitespace-nowrap overflow-ellipsis overflow-hidden w-16"
-                    [class]="data.width"
+                    class="whitespace-nowrap overflow-ellipsis overflow-hidden w-28"
+                    [style.width]="data.width"
                   >
                     {{ item[data.row] }}
                   </div>
                 </td>
+              </tr>
+              <tr
+                *ngIf="displayedData.length == 0"
+                class="flex items-center justify-center w-full p-10"
+              >
+                <td class="w-full">No Data Avaliable</td>
               </tr>
             </tbody>
           </table>
@@ -75,11 +90,11 @@
           <div
             class="w-full h-full bg-blue-600 flex items-center justify-between"
           >
-            <div class="flex items-center">
-              <div class="w-32 absolute flex items-center gap-3">
+            <div class="flex items-center" *ngIf="displayedData.length > 0">
+              <div class="w-32  flex items-center gap-3">
                 <span>rows: </span>
                 <app-select
-                  [data]="selectData"
+                  [data]="rowSelect"
                   [defaultValue]="defaultValue"
                   [isClear]="isClear"
                   [isReadOnly]="isReadOnly"
@@ -87,7 +102,10 @@
                 />
               </div>
             </div>
-            <div class="flex items-center bg-white px-2 rounded-md">
+            <div
+              class="flex items-center bg-white px-2 rounded-md"
+              *ngIf="displayedData.length > 0"
+            >
               <button
                 class="inline-flex items-center text-sm font-medium bg-transparent outline-none border-none cursor-pointer"
                 (click)="backBtn()"

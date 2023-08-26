@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, ElementRef, ViewChild } from '@angular/core';
 // import { FormBuilder, FormGroup } from '@angular/forms';
 // import { __values } from 'tslib';
 
@@ -13,8 +8,6 @@ import {
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent {
-
-
   constructor() {}
 
   //For auto focus
@@ -23,6 +16,7 @@ export class TableComponent {
   // Your data source
   @Input() data: any[] = [];
   @Input() header: any[] = [];
+  @Input() rowSelect: string[] = ['10','20','50'];
 
   //serch input
   inputText!: string;
@@ -31,13 +25,12 @@ export class TableComponent {
   itemsPerPage: number = 5;
   currentPage: number = 1;
 
-  //For row Select
-  selectData: any[] = ['1', '10', '20', '30', '40', '50', '60', '80', '100'];
   defaultValue: string = '5';
   isClear: boolean = false;
   isReadOnly: boolean = false;
   sortOn!: string;
   isFocus: boolean = true;
+  tableHeading: string = "Table Heading"
 
   //Sorting
   sortBy: string = 'id'; // Initial sort column
@@ -97,10 +90,18 @@ export class TableComponent {
   //Sort the data
   sortData(data: any[], sortBy: string, sortDirection: 'asc' | 'desc'): any[] {
     return data.sort((a, b) => {
-      if (sortDirection === 'asc') {
-        return a[sortBy] - b[sortBy];
+      if (typeof a[sortBy] === 'number' && typeof b[sortBy] === 'number') {
+        if (sortDirection === 'asc') {
+          return a[sortBy] - b[sortBy];
+        } else {
+          return b[sortBy] - a[sortBy];
+        }
       } else {
-        return b[sortBy] - a[sortBy];
+        if (sortDirection === 'asc') {
+          return a[sortBy].localeCompare(b[sortBy]);
+        } else {
+          return b[sortBy].localeCompare(a[sortBy]);
+        }
       }
     });
   }
