@@ -22,25 +22,31 @@
                   *ngFor="let head of header"
                   scope="col"
                   class="p-3 text-sm font-semibold tracking-wide text-left whitespace-nowrap overflow-hidden"
-
                 >
-                  <span class="pr-1 w-10 overflow-ellipsis overflow-hidden">
-                    {{ head.name }}</span
-                  >
-                  <span
-                    *ngIf="head.isSort"
-                    class="text-gray-500 mt-1 pl-0.5"
-                    (click)="toggleSort(head.row)"
-                    ><ng-icon name="bootstrapCaretDownFill"></ng-icon
-                  ></span>
-                  <span class="w-2 bg-gray-600 h-[1px] px-[1px]"></span>
-                  <span
-                    class="p-1 text-[12px] mt-1 text-gray-900 font-bold"
-                    ><ng-icon
-                      name="bootstrapSearch"
-                      (click)="setSearchValue(head.row)"
-                    ></ng-icon
-                  ></span>
+                  <div class="flex items-center justify-start gap-1">
+                    <span
+                      class="pr-1 overflow-ellipsis overflow-hidden w-10"
+                      [class]="head.width"
+                    >
+                      {{ head.name }}
+                    </span>
+                    <span
+                      *ngIf="head.isSort"
+                      class="text-gray-500 mt-1 pl-0.5 cursor-pointer"
+                      (click)="toggleSort(head.row)"
+                    >
+                      <ng-icon name="bootstrapCaretDownFill"></ng-icon>
+                    </span>
+                    <div class="w-0.5 bg-gray-600 h-4"></div>
+                    <span
+                      class="text-[12px] text-gray-900 font-bold cursor-pointer"
+                    >
+                      <ng-icon
+                        name="bootstrapSearch"
+                        (click)="setSearchValue(head.row)"
+                      ></ng-icon
+                    ></span>
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -51,10 +57,14 @@
                 <!-- ... your row cells ... -->
                 <td
                   *ngFor="let data of header"
-                  class="p-3 text-sm text-gray-700 "
+                  class="p-3 text-sm text-gray-700"
                 >
-                <span class="w-10 whitespace-nowrap overflow-ellipsis overflow-hidden">{{ item[data.row] }}</span>
-
+                  <div
+                    class="whitespace-nowrap overflow-ellipsis overflow-hidden w-16"
+                    [class]="data.width"
+                  >
+                    {{ item[data.row] }}
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -88,7 +98,7 @@
               <ul class="my-0 mx-4">
                 <li
                   *ngFor="let pageNumber of pageNumbers"
-                  class="link inline-block mx-1 w-6 h-6 rounded-full text-center text-sm cursor-pointer font-medium pt-[1px]"
+                  class="link inline-block mx-1 w-6 h-6 rounded-full text-center text-sm cursor-pointer font-medium pt-[1px] transition-all"
                   [class.active]="currentPage === pageNumber"
                   (click)="goToPage(pageNumber)"
                 >

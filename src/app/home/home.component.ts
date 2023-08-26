@@ -30,54 +30,128 @@ export class HomeComponent {
   height: string = 'h-8';
   tableData: any[] = [
     {
-      id: 1,
-      name: "Subhra Roy"
+        "id": 2,
+        "name": "Bitan Kundu",
+        "mobile": 9564430901,
+        "dob": "2023-08-19",
+        "email": "bita@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": "2023-08-19T14:12:46.000000Z",
+        "updated_at": "2023-08-19T14:12:46.000000Z"
     },
     {
-      id: 7412,
-      name: "Subhra Roy"
+        "id": 6,
+        "name": "hhjbd",
+        "mobile": 5589998,
+        "dob": "2023-08-19",
+        "email": "bbbhjbj@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": null,
+        "updated_at": null
     },
     {
-      id: 7812369,
-      name: "Subhra Roy"
+        "id": 12,
+        "name": "hhjbd",
+        "mobile": 5589798,
+        "dob": "2023-08-19",
+        "email": "bbbhjbj1@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": null,
+        "updated_at": null
     },
     {
-      id: 712369,
-      name: "Subhra Roy"
+        "id": 13,
+        "name": "hhjbd",
+        "mobile": 55897981,
+        "dob": "2023-08-19",
+        "email": "bbbhjbj41@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": null,
+        "updated_at": null
     },
     {
-      id: 7536,
-      name: "Subhra Roy"
+        "id": 14,
+        "name": "hhjbd",
+        "mobile": 558979812,
+        "dob": "2023-08-19",
+        "email": "bbbhjbj412@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": null,
+        "updated_at": null
     },
     {
-      id: 20,
-      name: "Subhra Roy"
+        "id": 15,
+        "name": "hhjbd",
+        "mobile": 5589798123,
+        "dob": "2023-08-19",
+        "email": "bbbhjbj4123@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": null,
+        "updated_at": null
     },
     {
-      id: 468,
-      name: "Subhra Roy"
+        "id": 16,
+        "name": "hhjbd",
+        "mobile": 55899985,
+        "dob": "2023-08-19",
+        "email": "bbbhjbj5@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": null,
+        "updated_at": null
     },
     {
-      id: 46,
-      name: "Subhra Roy"
+        "id": 3,
+        "name": "rizwan Ansari bjkkkkkkkkkkkkkkkkkkkkkkkkkk",
+        "mobile": 854213691236,
+        "dob": "2023-08-19",
+        "email": "rizwan@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": "2023-08-19T14:13:49.000000Z",
+        "updated_at": "2023-08-19T14:13:49.000000Z"
     },
     {
-      id: 14,
-      name: "Subhra Roy"
+        "id": 5,
+        "name": "Sandipan",
+        "mobile": 8952369899,
+        "dob": "2023-08-19",
+        "email": "sandipan@email.com",
+        "image": null,
+        "document": null,
+        "created_at": "2023-08-26T06:35:33.000000Z",
+        "updated_at": "2023-08-26T06:35:33.000000Z"
     },
-  ];
+    {
+        "id": 1,
+        "name": "Subhra Roy",
+        "mobile": 8927837533,
+        "dob": "2023-08-19",
+        "email": "subhraroy@gmail.com",
+        "image": null,
+        "document": null,
+        "created_at": "2023-08-19T13:42:29.000000Z",
+        "updated_at": "2023-08-19T13:42:29.000000Z"
+    }
+];
 
   header: any[] = [
     {
       name: 'ID',
       row: 'id',
-      width: 'w-16',
+      width: 'w-10',
       isSort: true,
     },
     {
       name: 'Name',
       row: 'name',
-      width: 'w-44'
+      width: 'w-20'
     },
     {
       name: 'Email',
@@ -95,7 +169,7 @@ export class HomeComponent {
   ) {}
 
   ngOnInit() {
-    this.getStudentList();
+    // this.getStudentList();
   }
 
   getStudentList() {
