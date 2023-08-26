@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {  Component } from '@angular/core';
 import { StudentService } from '../student.service';
 
 @Component({
@@ -31,61 +31,71 @@ export class HomeComponent {
   tableData: any[] = [
     {
       id: 1,
+      name: "Subhra Roy"
     },
     {
-      id: 2,
+      id: 7412,
+      name: "Subhra Roy"
     },
     {
-      id: 3,
+      id: 7812369,
+      name: "Subhra Roy"
     },
     {
-      id: 4,
+      id: 712369,
+      name: "Subhra Roy"
     },
     {
-      id: 5,
+      id: 7536,
+      name: "Subhra Roy"
     },
     {
-      id: 6,
+      id: 20,
+      name: "Subhra Roy"
     },
     {
-      id: 7,
+      id: 468,
+      name: "Subhra Roy"
     },
     {
-      id: 8,
-    },
-    {
-      id: 9,
-    },
-    {
-      id: 10,
-    },
-    {
-      id: 11,
-    },
-    {
-      id: 12,
-    },
-    {
-      id: 13,
+      id: 46,
+      name: "Subhra Roy"
     },
     {
       id: 14,
-    },
-    {
-      id: 15,
-    },
-    {
-      id: 16,
-    },
-    {
-      id: 17,
+      name: "Subhra Roy"
     },
   ];
 
-  constructor(private studentService: StudentService) {}
+  header: any[] = [
+    {
+      name: 'ID',
+      row: 'id',
+      width: 'w-16',
+      isSort: true,
+    },
+    {
+      name: 'Name',
+      row: 'name',
+      width: 'w-44'
+    },
+    {
+      name: 'Email',
+      row: 'email'
+    },
+    {
+      name: 'Mobile',
+      row: 'mobile',
+      isSort: true
+    },
+  ];
+
+  constructor(
+    private studentService: StudentService,
+  ) {}
 
   ngOnInit() {
-    // this.getStudentList();
+    this.getStudentList();
   }
 
   getStudentList() {
@@ -99,7 +109,7 @@ export class HomeComponent {
     });
   }
 
-  setValue(value: any) {
-    this.selectValue = value;
-  }
+  setValue = (value: any) => {
+    this.selectValue = value;;
+  };
 }

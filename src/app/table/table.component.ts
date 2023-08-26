@@ -1,5 +1,11 @@
-import { Component, Input } from '@angular/core';
-import { __values } from 'tslib';
+import {
+  Component,
+  Input,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
+// import { FormBuilder, FormGroup } from '@angular/forms';
+// import { __values } from 'tslib';
 
 @Component({
   selector: 'app-table',
@@ -8,19 +14,18 @@ import { __values } from 'tslib';
 })
 export class TableComponent {
 
+
   constructor() {}
+
+  //For auto focus
+  @ViewChild('searchInput') firstNameField!: ElementRef<HTMLInputElement>;
 
   // Your data source
   @Input() data: any[] = [];
-
-  secondData: any[] = [];
-
-  ngOnInit(){
-    this.secondData = this.data;
-  }
+  @Input() header: any[] = [];
 
   //serch input
-  inputText!: string
+  inputText!: string;
 
   //Pagination
   itemsPerPage: number = 5;
@@ -31,10 +36,26 @@ export class TableComponent {
   defaultValue: string = '5';
   isClear: boolean = false;
   isReadOnly: boolean = false;
+  sortOn!: string;
+  isFocus: boolean = true;
 
   //Sorting
   sortBy: string = 'id'; // Initial sort column
   sortDirection: 'asc' | 'desc' = 'asc';
+
+  // This is for data action
+  secondData: any[] = [];
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.sortOn = this.header[0].row;
+      this.setTableData();
+    }, 1000);
+  }
+
+  setTableData() {
+    this.secondData = this.data;
+  }
 
   //To catch the seleceted row value
   setValue = (value: any) => {
@@ -66,7 +87,9 @@ export class TableComponent {
   }
 
   nextBtn() {
-    if (this.currentPage < Math.ceil(this.secondData.length / this.itemsPerPage)) {
+    if (
+      this.currentPage < Math.ceil(this.secondData.length / this.itemsPerPage)
+    ) {
       this.currentPage++;
     }
   }
@@ -82,25 +105,27 @@ export class TableComponent {
     });
   }
 
-
-  toggleSort() {
+  toggleSort(sortBy: any) {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    this.sortData(this.secondData, this.sortBy, this.sortDirection);
+    this.sortData(this.secondData, sortBy, this.sortDirection);
+  }
+
+  setSearchValue(column: any) {
+    this.firstNameField.nativeElement.focus();
+    this.sortOn = column;
   }
 
   //search
-  setSearch(){
-    console.log(this.inputText);
-
-    if(this.inputText != ''){
+  setSearch() {
+    this.secondData = this.data;
+    if (this.inputText != '') {
       const text = this.inputText;
-      this.secondData = this.secondData.filter(function (object){
-        return object.id.toString().includes(text);
-      })
-    } else{
+      const column = this.sortOn;
+      this.secondData = this.secondData.filter(function (object) {
+        return object[column].toString().includes(text);
+      });
+    } else {
       this.secondData = this.data;
     }
-
   }
-
 }

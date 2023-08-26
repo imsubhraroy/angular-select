@@ -7,9 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { SelectComponent } from './select/select.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIconsModule } from '@ng-icons/core';
-import { bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill } from '@ng-icons/bootstrap-icons';
+import { bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill, bootstrapSearch } from '@ng-icons/bootstrap-icons';
 import { TableComponent } from './table/table.component';
 
 @NgModule({
@@ -24,7 +24,8 @@ import { TableComponent } from './table/table.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgIconsModule.withIcons({ bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill })
+    ReactiveFormsModule,
+    NgIconsModule.withIcons({ bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill, bootstrapSearch })
   ],
   providers: [],
   bootstrap: [AppComponent]
