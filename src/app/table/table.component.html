@@ -69,11 +69,25 @@
                   class="p-3 text-sm text-gray-700"
                 >
                   <div
+                    *ngIf="data.type != 'action'; else action"
                     class="whitespace-nowrap overflow-ellipsis overflow-hidden w-28"
                     [style.width]="data.width"
                   >
                     {{ item[data.row] }}
                   </div>
+                  <ng-template #action>
+                    <div class="relative">
+                      <span class="cursor-pointer " (click)="handleTableAction(item, item.showAction)"
+                        ><ng-icon name="bootstrapThreeDotsVertical"></ng-icon
+                      ></span>
+                      <div
+                        class="absolute bg-gray-100 rounded-md p-3 top-0 right-12 lg:right-24 xl:right-32 flex flex-col space-y-2 items-center justify-center cursor-pointer"
+                        [style.display]="item.showAction ? 'block' : 'none'"
+                        [innerHTML]="data.row"
+                        (click)="data.action(data.row, item[data.column])"
+                      ></div>
+                    </div>
+                  </ng-template>
                 </td>
               </tr>
               <tr
@@ -91,7 +105,7 @@
             class="w-full h-full bg-blue-600 flex items-center justify-between"
           >
             <div class="flex items-center" *ngIf="displayedData.length > 0">
-              <div class="w-32  flex items-center gap-3">
+              <div class="w-32 absolute flex items-center gap-3">
                 <span>rows: </span>
                 <app-select
                   [data]="rowSelect"

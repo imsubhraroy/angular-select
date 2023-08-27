@@ -54,6 +54,14 @@ export class HomeComponent {
       name: 'Mobile',
       row: 'mobile',
     },
+    {
+      type: 'action',
+      name: 'Action',
+      row: '<div class="text-blue-500">Edit</div><div class="text-red-500">Delete</div><div class="text-red-500">View</div>',
+      action: this.handleClick,
+      column: 'id',
+      showAction: false
+    },
   ];
 
   constructor(
@@ -73,6 +81,25 @@ export class HomeComponent {
         console.log(err);
       },
     });
+  }
+
+  handleClick(row: string, id: any){
+    console.log(id);
+
+  }
+
+  actionHandle: any = this.handleClick
+
+
+
+
+  handleEdit(id: number){
+    console.log("Delete " , id);
+
+  }
+  handleDelete(id: number){
+    console.log("Delete " , id);
+
   }
 
   setValue = (value: any) => {

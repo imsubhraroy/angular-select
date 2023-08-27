@@ -2,32 +2,40 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { SelectComponent } from './select/select.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIconsModule } from '@ng-icons/core';
-import { bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill, bootstrapSearch } from '@ng-icons/bootstrap-icons';
+import {
+  bootstrapCaretDownFill,
+  bootstrapX,
+  bootstrapCaretUpFill,
+  bootstrapSearch,
+  bootstrapPencilSquare,
+  bootstrapThreeDotsVertical
+} from '@ng-icons/bootstrap-icons';
 import { TableComponent } from './table/table.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    SelectComponent,
-    TableComponent
-  ],
+  declarations: [AppComponent, HomeComponent, SelectComponent, TableComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgIconsModule.withIcons({ bootstrapCaretDownFill, bootstrapX, bootstrapCaretUpFill, bootstrapSearch })
+    NgIconsModule.withIcons({
+      bootstrapCaretDownFill,
+      bootstrapX,
+      bootstrapCaretUpFill,
+      bootstrapSearch,
+      bootstrapPencilSquare,
+      bootstrapThreeDotsVertical
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

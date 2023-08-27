@@ -16,7 +16,7 @@ export class TableComponent {
   // Your data source
   @Input() data: any[] = [];
   @Input() header: any[] = [];
-  @Input() rowSelect: string[] = ['10','20','50'];
+  @Input() rowSelect: string[] = ['10', '20', '50'];
 
   //serch input
   inputText!: string;
@@ -30,7 +30,8 @@ export class TableComponent {
   isReadOnly: boolean = false;
   sortOn!: string;
   isFocus: boolean = true;
-  tableHeading: string = "Table Heading"
+  tableHeading: string = 'Table Heading';
+  tableAction: string = 'none';
 
   //Sorting
   sortBy: string = 'id'; // Initial sort column
@@ -38,6 +39,11 @@ export class TableComponent {
 
   // This is for data action
   secondData: any[] = [];
+
+  // handleClick(){
+  //   console.log("h");
+
+  // }
 
   ngOnInit() {
     setTimeout(() => {
@@ -47,7 +53,7 @@ export class TableComponent {
   }
 
   setTableData() {
-    this.secondData = this.data;
+    this.secondData = this.data.map((item) => ({ ...item, showAction: false }));
   }
 
   //To catch the seleceted row value
@@ -128,5 +134,14 @@ export class TableComponent {
     } else {
       this.secondData = this.data;
     }
+  }
+
+  //To View table action
+  handleTableAction(row: any, showAction: boolean) {
+    this.displayedData.forEach(item => {
+      item.showAction = item === row;
+    });
+
+    row.showAction = !showAction
   }
 }
