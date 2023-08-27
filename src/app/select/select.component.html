@@ -1,4 +1,4 @@
-<div class="w-full relative" [class]="className">
+<div #containerDiv class="w-full relative" [class]="className">
   <div class="w-full flex items-center relative" (click)="show()">
     <input
       type="text"
@@ -37,10 +37,11 @@
   </div>
 
   <div
+
     class="w-full overflow-y-auto bg-white max-h-60 absolute mt-1 transition ease-in-out"
     [class]="searchVisible ? 'border-2 rounded-md' : 'border-0'"
   >
-    <div class="search" [class.hidden]="!searchVisible">
+    <div class="search" [class.hidden]="!searchVisible" #targetDiv>
       <div class="overflow-y-auto">
         <ul id="list" class="list-none my-3">
           <li

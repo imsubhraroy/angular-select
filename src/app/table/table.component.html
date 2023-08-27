@@ -46,14 +46,17 @@
                     </span>
                     <div
                       class="flex items-center justify-start gap-1"
-                      *ngIf="head.isSort || head.isSearch"
+                      *ngIf="head.isSort"
                     >
                       <span
                         *ngIf="head.isSort"
                         class="text-gray-500 mt-1 pl-0.5 cursor-pointer"
-                        (click)="toggleSort(head.row)"
+                        (click)="toggleSort(head)"
                       >
-                        <ng-icon name="bootstrapCaretDownFill"></ng-icon>
+                        <ng-icon *ngIf="head.sortDirection == 'desc'; else dropUp" name="bootstrapCaretUpFill"></ng-icon>
+                        <ng-template #dropUp>
+                          <ng-icon  name="bootstrapCaretDownFill"></ng-icon>
+                        </ng-template>
                       </span>
                       <!-- <div
                         *ngIf="head.isSearch && head.isSort"

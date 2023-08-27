@@ -35,7 +35,6 @@ export class TableComponent {
 
   //Sorting
   sortBy: string = 'id'; // Initial sort column
-  sortDirection: 'asc' | 'desc' = 'asc';
 
   // This is for data action
   secondData: any[] = [];
@@ -49,7 +48,7 @@ export class TableComponent {
   }
 
   setTableData() {
-    this.secondData = this.data.map((item) => ({ ...item, showAction: false }));
+    this.secondData = this.data.map((item) => ({ ...item, showAction: false, sortDirection: 'asc' }));
   }
 
   //To catch the seleceted row value
@@ -135,9 +134,9 @@ export class TableComponent {
     });
   }
 
-  toggleSort(sortBy: any) {
-    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    this.sortData(this.secondData, sortBy, this.sortDirection);
+  toggleSort(column: any) {
+    column.sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.sortData(this.secondData, column.row, column.sortDirection);
   }
 
   setSearchValue(column: any) {
