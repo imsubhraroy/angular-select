@@ -40,10 +40,6 @@ export class TableComponent {
   // This is for data action
   secondData: any[] = [];
 
-  // handleClick(){
-  //   console.log("h");
-
-  // }
 
   ngOnInit() {
     setTimeout(() => {
@@ -77,6 +73,33 @@ export class TableComponent {
     if (pageNumber >= 1 && pageNumber <= this.pageNumbers.length) {
       this.currentPage = pageNumber;
     }
+  }
+
+  firstPage(){
+    this.currentPage = 1;
+  }
+
+  lastPage(){
+    this.currentPage = this.pageNumbers.length;
+  }
+
+  get visiblePageNumbers(): number[] {
+    const pageCount = Math.ceil(this.secondData.length / this.itemsPerPage);
+    const maxVisiblePages = 5; // Adjust this value as needed
+
+    if (pageCount <= maxVisiblePages) {
+      return this.pageNumbers;
+    }
+
+    const middlePage = Math.floor(maxVisiblePages / 2);
+    let startPage = Math.max(1, this.currentPage - middlePage);
+    const endPage = Math.min(pageCount, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   }
 
   backBtn() {
@@ -124,17 +147,33 @@ export class TableComponent {
 
   //search
   setSearch() {
+    // this.secondData = this.data;
+    // if (this.inputText != '') {
+    //   const text = this.inputText;
+    //   const column = this.sortOn;
+    //   this.secondData = this.secondData.filter(function (object) {
+    //     return object[column].toString().includes(text);
+    //   });
+    // } else {
+    //   this.secondData = this.data;
+    // }
     this.secondData = this.data;
-    if (this.inputText != '') {
-      const text = this.inputText;
-      const column = this.sortOn;
-      this.secondData = this.secondData.filter(function (object) {
-        return object[column].toString().includes(text);
-      });
-    } else {
-      this.secondData = this.data;
-    }
+  if (this.inputText !== '') {
+    const text = this.inputText.toLowerCase(); // Convert input text to lowercase for case-insensitive search
+
+    // Filter the data based on each column
+    this.secondData = this.secondData.filter(function (object) {
+      for (const column in object) {
+        if (Object.prototype.hasOwnProperty.call(object, column)) {
+          if (object[column] && object[column].toString().toLowerCase().includes(text)) {
+            return true; // If any field matches, return true to keep the object
+          }
+        }
+      }
+      return false; // If no field matches, return false to filter out the object
+    });
   }
+ }
 
   //To View table action
   handleTableAction(row: any, showAction: boolean) {

@@ -14,7 +14,11 @@ import {
   bootstrapCaretUpFill,
   bootstrapSearch,
   bootstrapPencilSquare,
-  bootstrapThreeDotsVertical
+  bootstrapThreeDotsVertical,
+  bootstrapChevronLeft,
+  bootstrapChevronRight,
+  bootstrapChevronDoubleLeft,
+  bootstrapChevronDoubleRight
 } from '@ng-icons/bootstrap-icons';
 import { TableComponent } from './table/table.component';
 
@@ -32,7 +36,11 @@ import { TableComponent } from './table/table.component';
       bootstrapCaretUpFill,
       bootstrapSearch,
       bootstrapPencilSquare,
-      bootstrapThreeDotsVertical
+      bootstrapChevronLeft,
+      bootstrapThreeDotsVertical,
+      bootstrapChevronRight,
+      bootstrapChevronDoubleLeft,
+      bootstrapChevronDoubleRight
     }),
   ],
   providers: [],

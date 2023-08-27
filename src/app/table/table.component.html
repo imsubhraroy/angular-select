@@ -2,16 +2,30 @@
   <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden border-2">
-        <div class="p-4 px-4 flex items-center justify-between text-xl">
-          <span>{{ tableHeading }}</span>
-          <input
-            class="border-2 h-10 pl-3 rounded-md focus:outline-2 text-sm focus:outline-blue-500"
-            type="text"
-            #searchInput
-            placeholder="Search ..."
-            (input)="setSearch()"
-            [(ngModel)]="inputText"
-          />
+        <div class="p-4 px-4 flex items-center justify-between">
+          <span class="text-xl font-bold">{{ tableHeading }}</span>
+          <div class="flex gap-6">
+            <input
+              class="border-2 h-10 pl-3 rounded-md focus:outline-2 text-sm focus:outline-blue-500"
+              type="text"
+              #searchInput
+              placeholder="Search ..."
+              (input)="setSearch()"
+              [(ngModel)]="inputText"
+            />
+            <div class="flex items-center" *ngIf="displayedData.length > 0">
+              <div class="w-32  flex items-center gap-3">
+                <span>rows: </span>
+                <app-select
+                  [data]="rowSelect"
+                  [defaultValue]="defaultValue"
+                  [isClear]="isClear"
+                  [isReadOnly]="isReadOnly"
+                  [setValue]="setValue"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="overflow-auto px-4 py-0">
@@ -41,7 +55,7 @@
                       >
                         <ng-icon name="bootstrapCaretDownFill"></ng-icon>
                       </span>
-                      <div
+                      <!-- <div
                         *ngIf="head.isSearch && head.isSort"
                         class="w-0.5 bg-gray-600 h-4"
                       ></div>
@@ -53,7 +67,7 @@
                           name="bootstrapSearch"
                           (click)="setSearchValue(head.row)"
                         ></ng-icon
-                      ></span>
+                      ></span> -->
                     </div>
                   </div>
                 </th>
@@ -77,34 +91,46 @@
                   </div>
                   <ng-template #action>
                     <div class="relative">
-                      <span class="cursor-pointer " (click)="handleTableAction(item, item.showAction)"
+                      <span
+                        class="cursor-pointer"
+                        (click)="handleTableAction(item, item.showAction)"
                         ><ng-icon name="bootstrapThreeDotsVertical"></ng-icon
                       ></span>
                       <div
                         class="absolute bg-gray-100 rounded-md p-3 top-0 right-12 lg:right-24 xl:right-32 flex flex-col space-y-2 items-center justify-center cursor-pointer"
                         [style.display]="item.showAction ? 'block' : 'none'"
-                        [innerHTML]="data.row"
-                        (click)="data.action(data.row, item[data.column])"
-                      ></div>
+                      >
+                        <div
+                          *ngFor="let action of data.actions"
+                          class="{{ action.class }}"
+                          (click)="action.action(item[action.row])"
+                        >
+                          {{ action.label }}
+                        </div>
+                      </div>
                     </div>
                   </ng-template>
                 </td>
               </tr>
-              <tr
-                *ngIf="displayedData.length == 0"
-                class="flex items-center justify-center w-full p-10"
-              >
-                <td class="w-full">No Data Avaliable</td>
-              </tr>
             </tbody>
           </table>
+          <div *ngIf="displayedData.length == 0" class="w-full">
+            <div
+              class="w-full flex items-center justify-center h-36 font-semibold text-xl"
+            >
+              No Data Avaliable
+            </div>
+          </div>
         </div>
 
-        <div class="flex h-4 items-center p-8 space-x-2 justify-end">
+        <div
+          class="flex h-4 items-center p-8 space-x-2 justify-end"
+          *ngIf="displayedData.length > 0"
+        >
           <div
-            class="w-full h-full bg-blue-600 flex items-center justify-between"
+            class="w-full h-full bg-blue-600 flex items-center justify-end"
           >
-            <div class="flex items-center" *ngIf="displayedData.length > 0">
+            <!-- <div class="flex items-center">
               <div class="w-32 absolute flex items-center gap-3">
                 <span>rows: </span>
                 <app-select
@@ -115,22 +141,25 @@
                   [setValue]="setValue"
                 />
               </div>
-            </div>
-            <div
-              class="flex items-center bg-white px-2 rounded-md"
-              *ngIf="displayedData.length > 0"
-            >
+            </div> -->
+            <div class="flex items-center bg-white px-2 rounded-md border" *ngIf="displayedData.length > 0">
               <button
-                class="inline-flex items-center text-sm font-medium bg-transparent outline-none border-none cursor-pointer"
+                class="inline-flex items-center text-sm font-medium bg-transparent outline-none h-6 text-center border-r-2 cursor-pointer pr-1.5"
+                (click)="firstPage()"
+              >
+                <ng-icon name="bootstrapChevronDoubleLeft"></ng-icon>
+              </button>
+              <button
+                class="inline-flex items-center text-sm font-medium bg-transparent outline-none cursor-pointer border-r-2"
                 (click)="backBtn()"
                 [disabled]="currentPage === 1"
               >
-                prev
+                <ng-icon name="bootstrapChevronLeft"></ng-icon>
               </button>
-              <ul class="my-0 mx-4">
+              <ul class="h-full">
                 <li
-                  *ngFor="let pageNumber of pageNumbers"
-                  class="link inline-block mx-1 w-6 h-6 rounded-full text-center text-sm cursor-pointer font-medium pt-[1px] transition-all"
+                  *ngFor="let pageNumber of visiblePageNumbers"
+                  class="link inline-block mx-0.5 w-6 h-auto rounded-sm text-center text-sm cursor-pointer font-medium transition-all border-r-2"
                   [class.active]="currentPage === pageNumber"
                   (click)="goToPage(pageNumber)"
                 >
@@ -138,11 +167,17 @@
                 </li>
               </ul>
               <button
-                class="inline-flex items-center text-sm font-medium bg-transparent outline-none border-none cursor-pointer"
+                class="inline-flex items-center text-sm font-medium bg-transparent outline-none cursor-pointer border-r-2"
                 (click)="nextBtn()"
                 [disabled]="currentPage === data.length"
               >
-                next
+                <ng-icon name="bootstrapChevronRight"></ng-icon>
+              </button>
+              <button
+                class="inline-flex items-center text-sm font-medium bg-transparent outline-none border-none cursor-pointer pl-1.5"
+                (click)="lastPage()"
+              >
+                <ng-icon name="bootstrapChevronDoubleRight"></ng-icon>
               </button>
             </div>
           </div>

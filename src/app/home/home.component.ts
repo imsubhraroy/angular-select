@@ -1,4 +1,4 @@
-import {  Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { StudentService } from '../student.service';
 
 @Component({
@@ -29,26 +29,27 @@ export class HomeComponent {
   optionLineBreack: boolean = true;
   height: string = 'h-8';
   tableData: any[] = [];
-  rowSelect: string[] = ['5','15','25']
+  rowSelect: string[] = ['1','5', '15', '25'];
 
   header: any[] = [
     {
       name: 'ID',
       row: 'id',
       isSort: true,
-      isSearch: true
+      isSearch: true,
+      width: '70px'
     },
     {
       name: 'Name',
       row: 'name',
       isSort: true,
-      width: '150px'
+      width: '150px',
     },
     {
       name: 'Email',
       row: 'email',
       isSearch: true,
-      isSort: true
+      isSort: true,
     },
     {
       name: 'Mobile',
@@ -57,16 +58,30 @@ export class HomeComponent {
     {
       type: 'action',
       name: 'Action',
-      row: '<div class="text-blue-500">Edit</div><div class="text-red-500">Delete</div><div class="text-red-500">View</div>',
-      action: this.handleClick,
-      column: 'id',
-      showAction: false
+      actions: [
+        {
+          label: 'Edit',
+          class: 'text-blue-500 border-b-2 border-blue-500',
+          action: this.handleEdit.bind(this),
+          row: 'id',
+        },
+        {
+          label: 'Delete',
+          class: 'text-red-500 border-b-2 border-red-500',
+          action: this.handleDelete.bind(this),
+          row: 'id',
+        },
+        {
+          label: 'View',
+          class: 'text-green-500 border-b-2 border-green-500',
+          action: this.handleView.bind(this),
+          row: 'id',
+        },
+      ],
     },
   ];
 
-  constructor(
-    private studentService: StudentService,
-  ) {}
+  constructor(private studentService: StudentService) {}
 
   ngOnInit() {
     this.getStudentList();
@@ -83,26 +98,17 @@ export class HomeComponent {
     });
   }
 
-  handleClick(row: string, id: any){
-    console.log(id);
-
-  }
-
-  actionHandle: any = this.handleClick
-
-
-
-
-  handleEdit(id: number){
-    console.log("Delete " , id);
-
-  }
-  handleDelete(id: number){
-    console.log("Delete " , id);
-
-  }
-
   setValue = (value: any) => {
-    this.selectValue = value;;
+    this.selectValue = value;
   };
+
+  handleEdit(id: any) {
+    console.log('Edit ', id);
+  }
+  handleView(id: any) {
+    console.log('View ', id);
+  }
+  handleDelete(id: any) {
+    console.log('Delete ', id);
+  }
 }
