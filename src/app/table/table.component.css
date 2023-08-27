@@ -5,10 +5,29 @@
 
 .active {
   color: white;
-  background-color: rgb(133, 133, 235);
+  background-color: #2563EE;
   background-repeat: no-repeat;
   background-position: 0 0;
 }
 ::-webkit-scrollbar {
   display: none;
+}
+
+.tabledata td:last-child{
+  position: absolute;
+
+}
+
+@media only screen and (max-width: 425px){
+  .tabledata td:last-child{
+    position: relative;
+  }
+  .last-row-table-action{
+    top: -6rem;
+  }
+}
+@media only screen and (min-width: 425px){
+  .last-row-table-action{
+    top: -6rem;
+  }
 }

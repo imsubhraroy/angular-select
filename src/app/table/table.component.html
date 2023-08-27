@@ -76,11 +76,11 @@
             <tbody
               class="divide-y divide-gray-100 border-b-2 border-gray-200 shadow"
             >
-              <tr *ngFor="let item of displayedData" class="bg-white">
+              <tr *ngFor="let item of displayedData; let i = index" class="bg-white tabledata">
                 <!-- ... your row cells ... -->
                 <td
                   *ngFor="let data of header"
-                  class="p-3 text-sm text-gray-700"
+                  class="p-3 text-sm text-gray-700 "
                 >
                   <div
                     *ngIf="data.type != 'action'; else action"
@@ -97,7 +97,8 @@
                         ><ng-icon name="bootstrapThreeDotsVertical"></ng-icon
                       ></span>
                       <div
-                        class="absolute bg-gray-100 rounded-md p-3 top-0 right-12 lg:right-24 xl:right-32 flex flex-col space-y-2 items-center justify-center cursor-pointer"
+                        class="absolute bg-gray-100 rounded-md p-3 -top-3 tableAction right-5  flex flex-col space-y-2 items-center justify-center cursor-pointer"
+                        [ngClass]="{'last-row-table-action': (i === displayedData.length - 1) || (i === displayedData.length - 2)}"
                         [style.display]="item.showAction ? 'block' : 'none'"
                       >
                         <div
@@ -142,24 +143,24 @@
                 />
               </div>
             </div> -->
-            <div class="flex items-center bg-white px-2 rounded-md border" *ngIf="displayedData.length > 0">
+            <div class="flex items-center justify-center bg-white rounded-md border" *ngIf="displayedData.length > 0">
               <button
-                class="inline-flex items-center text-sm font-medium bg-transparent outline-none h-6 text-center border-r-2 cursor-pointer pr-1.5"
+                class="border-r rounded-l-md cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
                 (click)="firstPage()"
               >
-                <ng-icon name="bootstrapChevronDoubleLeft"></ng-icon>
+                <ng-icon name="bootstrapChevronDoubleLeft" class="pt-0.5"></ng-icon>
               </button>
               <button
-                class="inline-flex items-center text-sm font-medium bg-transparent outline-none cursor-pointer border-r-2"
+                class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
                 (click)="backBtn()"
                 [disabled]="currentPage === 1"
               >
-                <ng-icon name="bootstrapChevronLeft"></ng-icon>
+                <ng-icon name="bootstrapChevronLeft" class="pt-0.5"></ng-icon>
               </button>
-              <ul class="h-full">
+              <ul class="flex">
                 <li
                   *ngFor="let pageNumber of visiblePageNumbers"
-                  class="link inline-block mx-0.5 w-6 h-auto rounded-sm text-center text-sm cursor-pointer font-medium transition-all border-r-2"
+                  class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
                   [class.active]="currentPage === pageNumber"
                   (click)="goToPage(pageNumber)"
                 >
@@ -167,17 +168,17 @@
                 </li>
               </ul>
               <button
-                class="inline-flex items-center text-sm font-medium bg-transparent outline-none cursor-pointer border-r-2"
+                class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
                 (click)="nextBtn()"
                 [disabled]="currentPage === data.length"
               >
-                <ng-icon name="bootstrapChevronRight"></ng-icon>
+                <ng-icon name="bootstrapChevronRight" class="pt-0.5"></ng-icon>
               </button>
               <button
-                class="inline-flex items-center text-sm font-medium bg-transparent outline-none border-none cursor-pointer pl-1.5"
+                class="cursor-pointer rounded-r-md p-1 px-3 hover:text-white hover:bg-blue-500"
                 (click)="lastPage()"
               >
-                <ng-icon name="bootstrapChevronDoubleRight"></ng-icon>
+                <ng-icon name="bootstrapChevronDoubleRight" class="pt-0.5"></ng-icon>
               </button>
             </div>
           </div>
