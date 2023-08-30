@@ -15,6 +15,7 @@ export class TableComponent {
 
   // Your data source
   @Input() data: any[] = [];
+  @Input() className!: any;
   @Input() header: any[] = [];
   @Input() rowSelect: string[] = ['10', '20', '50'];
 
@@ -44,7 +45,7 @@ export class TableComponent {
     setTimeout(() => {
       this.sortOn = this.header[0].row;
       this.setTableData();
-    }, 1000);
+    }, 3000);
   }
 
   setTableData() {

@@ -28,8 +28,9 @@ export class HomeComponent {
   isClear: boolean = true;
   optionLineBreack: boolean = true;
   height: string = 'h-8';
-  tableData: any[] = [];
+  tableData!: any;
   rowSelect: string[] = ['1','5', '15', '25'];
+  isGreen: boolean = false;
 
   header: any[] = [
     {
@@ -54,6 +55,10 @@ export class HomeComponent {
     {
       name: 'Mobile',
       row: 'mobile',
+      // conditionOperator: 'gt',
+      // conditionValue: 89278375333,
+      // className1: 'text-white bg-red-500',
+      className2: 'text-white bg-blue-500'
     },
     {
       type: 'action',
@@ -81,13 +86,17 @@ export class HomeComponent {
     },
   ];
 
-  constructor(private studentService: StudentService) {}
+  constructor(private studentService: StudentService) {
+    this.getStudentList();
+  }
 
   ngOnInit() {
     this.getStudentList();
   }
 
   getStudentList() {
+    console.log("y");
+
     this.studentService.getStudentList().subscribe({
       next: (res: any) => {
         this.tableData = res.data;
