@@ -1,4 +1,10 @@
 <div #containerDiv class="w-full relative" [class]="className">
+  <div class="my-1" *ngIf="labelText">
+    <label class="text-base font-medium"
+      >{{ labelText
+      }}<span *ngIf="!mandatory" class="text-black">(Optional)</span></label
+    >
+  </div>
   <div class="w-full flex items-center relative" (click)="show()">
     <input
       type="text"
@@ -37,8 +43,7 @@
   </div>
 
   <div
-
-    class="w-full overflow-y-auto bg-white max-h-60 absolute mt-1 transition ease-in-out"
+    class="w-full overflow-y-auto bg-white max-h-60 z-10 absolute mt-1 transition ease-in-out"
     [class]="searchVisible ? 'border-2 rounded-md' : 'border-0'"
   >
     <div class="search" [class.hidden]="!searchVisible" #targetDiv>
@@ -46,17 +51,17 @@
         <ul id="list" class="list-none my-3">
           <li
             *ngFor="let item of data"
-            (click)="setData($event)"
+            (click)="setData(item)"
             [class.whitespace-nowrap]="optionLineBreack"
             class="py-1 px-2 text-black hover:text-white hover:bg-blue-500 cursor-pointer rounded-sm overflow-ellipsis overflow-hidden"
-            [class]="item === inputValue ? 'bg-blue-500 text-white' : ''"
+            [class]="item.label === inputValue ? 'bg-blue-500 text-white' : ''"
             [style.display]="
-              item.toUpperCase().includes(inputText.toUpperCase())
+              item.label?.toUpperCase().includes(inputText.toUpperCase())
                 ? 'block'
                 : 'none'
             "
           >
-            {{ item }}
+            {{ item.label }}
           </li>
           <li class="px-2" [class.hidden]="hasFilteredItems()">No Data</li>
         </ul>

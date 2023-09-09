@@ -1,37 +1,54 @@
-import { Component, Input, ElementRef, ViewChild } from '@angular/core';
-// import { FormBuilder, FormGroup } from '@angular/forms';
-// import { __values } from 'tslib';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
-export class TableComponent {
-  constructor() {}
-
-  //For auto focus
-  @ViewChild('searchInput') firstNameField!: ElementRef<HTMLInputElement>;
-
+export class TableComponent implements OnInit {
   // Your data source
   @Input() data: any[] = [];
   @Input() className!: any;
   @Input() header: any[] = [];
-  @Input() rowSelect: string[] = ['10', '20', '50'];
+  @Input() rowSelect: any[] = [
+    {
+      label: '10',
+      value: '10',
+    },
+    {
+      label: '20',
+      value: '20',
+    },
+    {
+      label: '30',
+      value: '30',
+    },
+  ];
+  @Input() tableHeading: string = 'Table Heading';
 
   //serch input
   inputText!: string;
 
   //Pagination
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 10;
   currentPage: number = 1;
 
-  defaultValue: string = '5';
+  defaultValue: any = [
+    {
+      label: '10',
+      value: '10',
+    },
+  ];
   isClear: boolean = false;
   isReadOnly: boolean = false;
-  sortOn!: string;
   isFocus: boolean = true;
-  tableHeading: string = 'Table Heading';
   tableAction: string = 'none';
 
   //Sorting
@@ -40,16 +57,20 @@ export class TableComponent {
   // This is for data action
   secondData: any[] = [];
 
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     setTimeout(() => {
-      this.sortOn = this.header[0].row;
       this.setTableData();
     }, 3000);
   }
 
   setTableData() {
-    this.secondData = this.data.map((item) => ({ ...item, showAction: false, sortDirection: 'asc' }));
+    this.secondData = this.data.map((item) => ({
+      ...item,
+      showAction: false,
+      sortDirection: 'asc',
+    }));
   }
 
   //To catch the seleceted row value
@@ -59,7 +80,7 @@ export class TableComponent {
 
   //TO diaplay data according item per page
   get displayedData(): any[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const startIndex = 0;
     return this.secondData.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
@@ -75,11 +96,11 @@ export class TableComponent {
     }
   }
 
-  firstPage(){
+  firstPage() {
     this.currentPage = 1;
   }
 
-  lastPage(){
+  lastPage() {
     this.currentPage = this.pageNumbers.length;
   }
 
@@ -99,7 +120,10 @@ export class TableComponent {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
   }
 
   backBtn() {
@@ -140,11 +164,6 @@ export class TableComponent {
     this.sortData(this.secondData, column.row, column.sortDirection);
   }
 
-  setSearchValue(column: any) {
-    this.firstNameField.nativeElement.focus();
-    this.sortOn = column;
-  }
-
   //search
   setSearch() {
     // this.secondData = this.data;
@@ -158,29 +177,32 @@ export class TableComponent {
     //   this.secondData = this.data;
     // }
     this.secondData = this.data;
-  if (this.inputText !== '') {
-    const text = this.inputText.toLowerCase(); // Convert input text to lowercase for case-insensitive search
+    if (this.inputText !== '') {
+      const text = this.inputText.toLowerCase(); // Convert input text to lowercase for case-insensitive search
 
-    // Filter the data based on each column
-    this.secondData = this.secondData.filter(function (object) {
-      for (const column in object) {
-        if (Object.prototype.hasOwnProperty.call(object, column)) {
-          if (object[column] && object[column].toString().toLowerCase().includes(text)) {
-            return true; // If any field matches, return true to keep the object
+      // Filter the data based on each column
+      this.secondData = this.secondData.filter(function (object) {
+        for (const column in object) {
+          if (Object.prototype.hasOwnProperty.call(object, column)) {
+            if (
+              object[column] &&
+              object[column].toString().toLowerCase().includes(text)
+            ) {
+              return true; // If any field matches, return true to keep the object
+            }
           }
         }
-      }
-      return false; // If no field matches, return false to filter out the object
-    });
+        return false; // If no field matches, return false to filter out the object
+      });
+    }
   }
- }
 
   //To View table action
   handleTableAction(row: any, showAction: boolean) {
-    this.displayedData.forEach(item => {
+    this.displayedData.forEach((item) => {
       item.showAction = item === row;
     });
 
-    row.showAction = !showAction
+    row.showAction = !showAction;
   }
 }

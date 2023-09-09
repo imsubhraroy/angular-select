@@ -7,29 +7,58 @@ import { StudentService } from '../student.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  defaultValue: any = 'Subhra Roy';
-  data: any[] = [
-    'Subhra Roy',
-    'Sandipan Kundu',
-    'Rizwan Ansari',
-    'Sushanto Karmakar',
-    'Suman Biswas',
-    'Rahul Gandhi',
-    'Norandro Modi',
-    'Rabindranath Tagore',
-    'Netaji Subhas Chandra Bose Freedom Fighter',
-    'Binoy',
-    'Badal',
-    'Dinesh',
+  defaultValue: any = [
+    {
+      label: 'Subhra Roy',
+      value: 1,
+    }
   ];
+
+  data: any[] = [
+    {
+      label: 'Subhra',
+      value: 1
+    }
+  ];
+
+
   selectValue!: any;
   className: string = '';
   isReadOnly: boolean = false;
   isClear: boolean = true;
   optionLineBreack: boolean = true;
   height: string = 'h-8';
-  tableData!: any;
-  rowSelect: string[] = ['1','5', '15', '25'];
+  tableData: any = [
+    {
+      id: 1,
+      name: 'subh',
+      email: 'khhk',
+      mobile: 7895366,
+      status: 0,
+    },
+    {
+      id: 1,
+      name: 'subh',
+      email: null,
+      mobile: 7895366,
+      status: 1,
+    },
+    {
+      id: 1,
+      name: 'subh',
+      email: 'khhk',
+      mobile: 5566,
+      status: 0,
+    },
+    {
+      id: 1,
+      name: 'subh',
+      email: 'khhk',
+      mobile: 7895366,
+      status: 0,
+    },
+  ];
+  rowSelect: string[] = ['1', '5', '15', '25'];
   isGreen: boolean = false;
 
   header: any[] = [
@@ -38,7 +67,7 @@ export class HomeComponent {
       row: 'id',
       isSort: true,
       isSearch: true,
-      width: '70px'
+      width: '70px',
     },
     {
       name: 'Name',
@@ -47,18 +76,26 @@ export class HomeComponent {
       width: '150px',
     },
     {
+      name: 'Status',
+      row: 'status',
+      conditionOperator: 'eq',
+      conditionValue: 1,
+      onTrue: "Active",
+      onFalse: "Deactive",
+      width: '150px',
+    },
+    {
       name: 'Email',
       row: 'email',
-      isSearch: true,
+      conditionOperator: 'eq',
+      conditionValue: null,
+      onTrue: "-",
+      onFalse: 'row',
       isSort: true,
     },
     {
       name: 'Mobile',
       row: 'mobile',
-      // conditionOperator: 'gt',
-      // conditionValue: 89278375333,
-      // className1: 'text-white bg-red-500',
-      className2: 'text-white bg-blue-500'
     },
     {
       type: 'action',
@@ -88,14 +125,26 @@ export class HomeComponent {
 
   constructor(private studentService: StudentService) {
     this.getStudentList();
+    if (this.tableData && this.tableData.length) {
+      // Update this.tableDataData state with mapped values
+      const updatedthistableDataData = this.tableData?.length
+        ? this.tableData?.map(function (currentValue : any, Index: number) {
+          return { ...currentValue, ...{ id: Index + 1 } };
+        })
+        : "";
+      // Set updatedCategoryData to categoryData state
+      this.tableData = updatedthistableDataData;
+    } else {
+      // Set an empty array to categoryData state
+      this.tableData = [];
+    }
   }
 
   ngOnInit() {
-    this.getStudentList();
+    // this.getStudentList();/
   }
 
   getStudentList() {
-    console.log("y");
 
     this.studentService.getStudentList().subscribe({
       next: (res: any) => {
@@ -108,6 +157,8 @@ export class HomeComponent {
   }
 
   setValue = (value: any) => {
+    console.log(value);
+
     this.selectValue = value;
   };
 

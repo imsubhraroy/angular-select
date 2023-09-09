@@ -5,6 +5,7 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-select',
@@ -18,6 +19,8 @@ export class SelectComponent {
   @Input() isReadOnly: boolean = false;
   @Input() isClear: boolean = true;
   @Input() height!: string;
+  @Input() labelText!: string;
+  @Input() mandatory: boolean = false;
   @Input() optionLineBreack: boolean = true;
   @Input() setValue!: (parameter: any) => void;
   @ViewChild('targetDiv') targetDiv!: ElementRef;
@@ -30,8 +33,8 @@ export class SelectComponent {
 
   ngOnInit() {
     if (this.defaultValue !== undefined) {
-      this.inputValue = this.defaultValue;
-      this.setValue(this.inputValue);
+      this.inputValue = this.defaultValue[0].label;
+      // this.setValue(this.defaultValue);
     }
   }
 
@@ -54,7 +57,7 @@ export class SelectComponent {
 
   hasFilteredItems() {
     return this.data.some((item: any) =>
-      item.toUpperCase().includes(this.inputText.toUpperCase())
+      item.label?.toUpperCase().includes(this.inputText.toUpperCase())
     );
   }
 
@@ -70,12 +73,10 @@ export class SelectComponent {
     this.searchVisible = !this.searchVisible;
   }
 
-  setData(event: any) {
-    const clickedElement = event.target || event.srcElement;
-    const value = clickedElement.textContent || clickedElement.innerText;
-    this.inputValue = value.trim();
+  setData(value: any) {
+    this.inputValue = value.label.trim();
     this.inputText = '';
-    this.setValue(this.inputValue);
+    this.setValue(value);
     this.searchVisible = false;
     this.isDropDown = false;
   }
