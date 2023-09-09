@@ -1,199 +1,294 @@
-<div class="flex flex-col">
-  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-      <div class="overflow-hidden border-2">
-        <div class="p-4 px-4 flex items-center justify-between">
-          <span class="text-xl font-bold">{{ tableHeading }}</span>
-          <div class="flex gap-6">
-            <input class="border-2 h-10 pl-3 rounded-md focus:outline-2 text-sm focus:outline-blue-500" type="text"
-              #searchInput placeholder="Search ..." (input)="setSearch()" [(ngModel)]="inputText" />
-            <div class="flex items-center" *ngIf="displayedData.length > 0">
-              <div class="w-32 flex items-center gap-3">
-                <span>rows: </span>
-                <app-select [data]="rowSelect" [defaultValue]="defaultValue" [isClear]="isClear"
-                  [isReadOnly]="isReadOnly" [setValue]="setValue" />
-              </div>
+<!-- <div class="flex flex-col"> -->
+<div class="overflow-x-auto md:overflow-hidden">
+  <div class="inline-block min-w-full py-2">
+    <div class="border-2 rounded-md">
+      <div class="p-4 flex items-center justify-between mb-5">
+        <span class="text-xl font-bold hidden md:block">{{
+          tableHeading
+        }}</span>
+        <div class="flex gap-4 items-center justify-between md:justify-end">
+          <input
+            class="border-2 h-10 pl-3 rounded-md focus:outline-2 text-sm focus:outline-blue-500"
+            type="text"
+            #searchInput
+            placeholder="Search ..."
+            (input)="setSearch()"
+            [(ngModel)]="inputText"
+          />
+          <div class="flex items-center" *ngIf="displayedData.length > 0">
+            <div class="w-32 flex items-center gap-3">
+              <span>rows: </span>
+              <app-select
+                [data]="rowSelect"
+                [defaultValue]="defaultValue"
+                [isClear]="isClear"
+                [isReadOnly]="isReadOnly"
+                [setValue]="setValue"
+              />
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="overflow-auto px-4 py-0">
-          <table class="w-full">
-            <thead class="bg-gray-50 border-b-2 border-gray-200">
-              <tr>
-                <th *ngFor="let head of header" scope="col"
-                  class="p-3 text-sm font-semibold tracking-wide text-left whitespace-nowrap overflow-hidden">
-                  <div class="flex items-center justify-start gap-1" [style.width]="head.width">
-                    <span class="pr-1 overflow-ellipsis overflow-hidden">
-                      {{ head.name }}
+      <div
+        class="max-w-[290px] md:max-w-[670px] lg:max-w-[800px] xl:max-w-[1180px] mx-5 overflow-x-auto"
+      >
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b-2 border-gray-200">
+            <tr>
+              <th
+                *ngFor="let head of header"
+                scope="col"
+                class="p-3 text-sm font-semibold tracking-wide text-left whitespace-nowrap overflow-hidden"
+              >
+                <div
+                  class="flex items-center justify-start gap-1"
+                  [style.width]="head.width"
+                >
+                  <span class="pr-1 overflow-ellipsis overflow-hidden">
+                    {{ head.name }}
+                  </span>
+                  <div
+                    class="flex items-center justify-start gap-1"
+                    *ngIf="head.isSort"
+                  >
+                    <span
+                      *ngIf="head.isSort"
+                      class="text-gray-500 mt-1 pl-0.5 cursor-pointer"
+                      (click)="toggleSort(head)"
+                    >
+                      <ng-icon
+                        *ngIf="head.sortDirection == 'desc'; else dropUp"
+                        name="bootstrapCaretUpFill"
+                      ></ng-icon>
+                      <ng-template #dropUp>
+                        <ng-icon name="bootstrapCaretDownFill"></ng-icon>
+                      </ng-template>
                     </span>
-                    <div class="flex items-center justify-start gap-1" *ngIf="head.isSort">
-                      <span *ngIf="head.isSort" class="text-gray-500 mt-1 pl-0.5 cursor-pointer"
-                        (click)="toggleSort(head)">
-                        <ng-icon *ngIf="head.sortDirection == 'desc'; else dropUp"
-                          name="bootstrapCaretUpFill"></ng-icon>
-                        <ng-template #dropUp>
-                          <ng-icon name="bootstrapCaretDownFill"></ng-icon>
-                        </ng-template>
-                      </span>
-                      <!-- <div
-                        *ngIf="head.isSearch && head.isSort"
-                        class="w-0.5 bg-gray-600 h-4"
-                      ></div>
-                      <span
-                        *ngIf="head.isSearch"
-                        class="text-[12px] text-gray-900 font-bold cursor-pointer mt-1"
-                      >
-                        <ng-icon
-                          name="bootstrapSearch"
-                          (click)="setSearchValue(head.row)"
-                        ></ng-icon
-                      ></span> -->
-                    </div>
+                    <!-- <div
+                          *ngIf="head.isSearch && head.isSort"
+                          class="w-0.5 bg-gray-600 h-4"
+                        ></div>
+                        <span
+                          *ngIf="head.isSearch"
+                          class="text-[12px] text-gray-900 font-bold cursor-pointer mt-1"
+                        >
+                          <ng-icon
+                            name="bootstrapSearch"
+                            (click)="setSearchValue(head.row)"
+                          ></ng-icon
+                        ></span> -->
                   </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100 border-b-2 border-gray-200 shadow">
-              <tr *ngFor="let item of displayedData; let i = index" class="bg-white tabledata">
-                <!-- ... your row cells ... -->
-                <td *ngFor="let data of header" class="p-3 text-sm text-gray-700">
-                  <div *ngIf="data.type != 'action'; else action"
-                    class="whitespace-nowrap overflow-ellipsis overflow-hidden w-28" [style.width]="data.width">
-                    <span *ngIf="data.conditionOperator == 'lt'; else gt" [class]="
-                        item[data.row] <= data.conditionClass
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="divide-y divide-gray-100 border-b-2 border-gray-200 shadow"
+          >
+            <tr
+              *ngFor="let item of displayedData; let i = index"
+              class="bg-white tabledata"
+            >
+              <!-- ... your row cells ... -->
+              <td *ngFor="let data of header" class="p-3 text-sm text-gray-700">
+                <div
+                  *ngIf="data.type != 'action'; else action"
+                  class="whitespace-nowrap overflow-ellipsis overflow-hidden w-28"
+                  [style.width]="data.width"
+                >
+                  <span
+                    *ngIf="data.conditionOperator == 'lt'; else gt"
+                    [class]="
+                      item[data.row] <= data.conditionClass
+                        ? data.onTrueClass
+                        : data.onFalseClass
+                    "
+                    >{{
+                      data.conditionValue !== undefined
+                        ? item[data.row] <= data.conditionValue
+                          ? data.onTrue == "row"
+                            ? item[data.row]
+                            : data.onTrue
+                          : data.onFalse == "row"
+                          ? item[data.row]
+                          : data.onFalse
+                        : item[data.row]
+                    }}</span
+                  >
+                  <ng-template #gt>
+                    <span
+                      *ngIf="data.conditionOperator == 'gt'; else eq"
+                      [class]="
+                        item[data.row] >= data.conditionClass
                           ? data.onTrueClass
                           : data.onFalseClass
-                      ">{{
-                      data.conditionValue !== undefined
-                      ? item[data.row] <= data.conditionValue ? data.onTrue=="row" ? item[data.row] : data.onTrue :
-                        data.onFalse=="row" ? item[data.row] : data.onFalse : item[data.row] }}</span>
-                        <ng-template #gt>
-                          <span *ngIf="data.conditionOperator == 'gt'; else eq" [class]="
-                          item[data.row] >= data.conditionClass
-                            ? data.onTrueClass
-                            : data.onFalseClass
-                        ">{{
-                            data.conditionValue !== undefined
-                            ? item[data.row] >= data.conditionValue
+                      "
+                      >{{
+                        data.conditionValue !== undefined
+                          ? item[data.row] >= data.conditionValue
                             ? data.onTrue == "row"
-                            ? item[data.row]
-                            : data.onTrue
+                              ? item[data.row]
+                              : data.onTrue
                             : data.onFalse == "row"
                             ? item[data.row]
                             : data.onFalse
-                            : item[data.row]
-                            }}</span>
-                        </ng-template>
-                        <ng-template #eq>
-                          <span *ngIf="data.conditionOperator == 'eq'; else neq" [class]="
-                          item[data.row] == data.conditionClass
-                            ? data.onTrueClass
-                            : data.onFalseClass
-                        ">{{
-                            data.conditionValue !== undefined
-                            ? item[data.row] == data.conditionValue
+                          : item[data.row]
+                      }}</span
+                    >
+                  </ng-template>
+                  <ng-template #eq>
+                    <span
+                      *ngIf="data.conditionOperator == 'eq'; else neq"
+                      [class]="
+                        item[data.row] == data.conditionClass
+                          ? data.onTrueClass
+                          : data.onFalseClass
+                      "
+                      >{{
+                        data.conditionValue !== undefined
+                          ? item[data.row] == data.conditionValue
                             ? data.onTrue == "row"
-                            ? item[data.row]
-                            : data.onTrue
+                              ? item[data.row]
+                              : data.onTrue
                             : data.onFalse == "row"
                             ? item[data.row]
                             : data.onFalse
-                            : item[data.row]
-                            }}</span>
-                        </ng-template>
-                        <ng-template #neq>
-                          <span *ngIf="data.conditionOperator == 'neq'; else default" [class]="
-                          item[data.row] != data.conditionClass
-                            ? data.onTrueClass
-                            : data.onFalseClass
-                        ">{{
-                            data.conditionValue !== undefined
-                            ? item[data.row] != data.conditionValue
+                          : item[data.row]
+                      }}</span
+                    >
+                  </ng-template>
+                  <ng-template #neq>
+                    <span
+                      *ngIf="data.conditionOperator == 'neq'; else default"
+                      [class]="
+                        item[data.row] != data.conditionClass
+                          ? data.onTrueClass
+                          : data.onFalseClass
+                      "
+                      >{{
+                        data.conditionValue !== undefined
+                          ? item[data.row] != data.conditionValue
                             ? data.onTrue == "row"
-                            ? item[data.row]
-                            : data.onTrue
+                              ? item[data.row]
+                              : data.onTrue
                             : data.onFalse == "row"
                             ? item[data.row]
                             : data.onFalse
-                            : item[data.row]
-                            }}</span>
-                        </ng-template>
-                        <ng-template #default>
-                          <span [class]="data.class">{{ item[data.row] }}</span>
-                        </ng-template>
-                  </div>
-                  <ng-template #action>
-                    <div class="relative">
-                      <span class="cursor-pointer" (click)="handleTableAction(item, item.showAction)"><ng-icon
-                          name="bootstrapThreeDotsVertical"></ng-icon></span>
+                          : item[data.row]
+                      }}</span
+                    >
+                  </ng-template>
+                  <ng-template #default>
+                    <span [class]="data.class">{{ item[data.row] }}</span>
+                  </ng-template>
+                </div>
+                <ng-template #action>
+                  <div class="relative pl-5">
+                    <span
+                      class="cursor-pointer"
+                      (click)="handleTableAction(item, item.showAction)"
+                      ><ng-icon name="bootstrapThreeDotsVertical"></ng-icon
+                    ></span>
+                    <div
+                      class="absolute bg-gray-100 rounded-md p-3 -top-3 tableAction right-9 flex flex-col space-y-2 items-center justify-center cursor-pointer"
+                      [ngClass]="{
+                        'last-row-table-action':
+                          i === displayedData.length - 1 ||
+                          i === displayedData.length - 2
+                      }"
+                      [style.display]="item.showAction ? 'block' : 'none'"
+                    >
                       <div
-                        class="absolute bg-gray-100 rounded-md p-3 -top-3 tableAction right-5 flex flex-col space-y-2 items-center justify-center cursor-pointer"
-                        [ngClass]="{
-                          'last-row-table-action':
-                            i === displayedData.length - 1 ||
-                            i === displayedData.length - 2
-                        }" [style.display]="item.showAction ? 'block' : 'none'">
-                        <div *ngFor="let action of data.actions" class="{{ action.class }}"
-                          (click)="action.action(item[action.row])">
-                          {{ action.label }}
-                        </div>
+                        *ngFor="let action of data.actions"
+                        class="{{ action.class }}"
+                        (click)="action.action(item[action.row])"
+                      >
+                        {{ action.label }}
                       </div>
                     </div>
-                  </ng-template>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div *ngIf="displayedData.length == 0" class="w-full">
-            <div class="w-full flex items-center justify-center h-36 font-semibold text-xl">
-              No Data Avaliable
-            </div>
+                  </div>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="displayedData.length == 0" class="w-full">
+          <div
+            class="w-full flex items-center justify-center h-36 font-semibold text-xl"
+          >
+            No Data Avaliable
           </div>
         </div>
+      </div>
 
-        <div class="flex h-4 items-center p-8 space-x-2 justify-end" *ngIf="displayedData.length > 0">
-          <div class="w-full h-full bg-blue-600 flex items-center justify-end">
-            <!-- <div class="flex items-center">
-              <div class="w-32 absolute flex items-center gap-3">
-                <span>rows: </span>
-                <app-select
-                  [data]="rowSelect"
-                  [defaultValue]="defaultValue"
-                  [isClear]="isClear"
-                  [isReadOnly]="isReadOnly"
-                  [setValue]="setValue"
-                />
-              </div>
-            </div> -->
-            <div class="flex items-center justify-center bg-white rounded-md border" *ngIf="displayedData.length > 0">
-              <button class="border-r rounded-l-md cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
-                (click)="firstPage()">
-                <ng-icon name="bootstrapChevronDoubleLeft" class="pt-0.5"></ng-icon>
-              </button>
-              <button class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500" (click)="backBtn()"
-                [disabled]="currentPage === 1">
-                <ng-icon name="bootstrapChevronLeft" class="pt-0.5"></ng-icon>
-              </button>
-              <ul class="flex">
-                <li *ngFor="let pageNumber of visiblePageNumbers"
-                  class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
-                  [class.active]="currentPage === pageNumber" (click)="goToPage(pageNumber)">
-                  {{ pageNumber }}
-                </li>
-              </ul>
-              <button class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500" (click)="nextBtn()"
-                [disabled]="currentPage === data.length">
-                <ng-icon name="bootstrapChevronRight" class="pt-0.5"></ng-icon>
-              </button>
-              <button class="cursor-pointer rounded-r-md p-1 px-3 hover:text-white hover:bg-blue-500"
-                (click)="lastPage()">
-                <ng-icon name="bootstrapChevronDoubleRight" class="pt-0.5"></ng-icon>
-              </button>
-            </div>
+      <div
+        class="flex h-4 items-center p-8 space-x-2 justify-end"
+        *ngIf="displayedData.length > 0"
+      >
+        <div class="w-full h-full bg-blue-600 flex items-center justify-end">
+          <!-- <div class="flex items-center">
+                <div class="w-32 absolute flex items-center gap-3">
+                  <span>rows: </span>
+                  <app-select
+                    [data]="rowSelect"
+                    [defaultValue]="defaultValue"
+                    [isClear]="isClear"
+                    [isReadOnly]="isReadOnly"
+                    [setValue]="setValue"
+                  />
+                </div>
+              </div> -->
+          <div
+            class="flex items-center justify-center bg-white rounded-md border"
+            *ngIf="displayedData.length > 0"
+          >
+            <button
+              class="border-r rounded-l-md cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
+              (click)="firstPage()"
+            >
+              <ng-icon
+                name="bootstrapChevronDoubleLeft"
+                class="pt-0.5"
+              ></ng-icon>
+            </button>
+            <button
+              class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
+              (click)="backBtn()"
+              [disabled]="currentPage === 1"
+            >
+              <ng-icon name="bootstrapChevronLeft" class="pt-0.5"></ng-icon>
+            </button>
+            <ul class="flex">
+              <li
+                *ngFor="let pageNumber of visiblePageNumbers"
+                class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
+                [class.active]="currentPage === pageNumber"
+                (click)="goToPage(pageNumber)"
+              >
+                {{ pageNumber }}
+              </li>
+            </ul>
+            <button
+              class="border-r cursor-pointer p-1 px-3 hover:text-white hover:bg-blue-500"
+              (click)="nextBtn()"
+              [disabled]="currentPage === data.length"
+            >
+              <ng-icon name="bootstrapChevronRight" class="pt-0.5"></ng-icon>
+            </button>
+            <button
+              class="cursor-pointer rounded-r-md p-1 px-3 hover:text-white hover:bg-blue-500"
+              (click)="lastPage()"
+            >
+              <ng-icon
+                name="bootstrapChevronDoubleRight"
+                class="pt-0.5"
+              ></ng-icon>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<!-- </div> -->

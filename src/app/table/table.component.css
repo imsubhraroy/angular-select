@@ -13,7 +13,7 @@
   display: none;
 }
 
-.tabledata td:last-child{
+/* .tabledata td:last-child{
   position: absolute;
 
 }
@@ -30,4 +30,4 @@
   .last-row-table-action{
     top: -6rem;
   }
-}
+} */
