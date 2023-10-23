@@ -21,15 +21,20 @@ import {
   bootstrapChevronDoubleRight
 } from '@ng-icons/bootstrap-icons';
 import { TableComponent } from './table/table.component';
+import { TableTwoComponent } from './table-two/table-two.component';
+import { DataPickerComponent } from './data-picker/data-picker.component';
+import { DataPickerTwoComponent } from './data-picker-two/data-picker-two.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, SelectComponent, TableComponent],
+  declarations: [AppComponent, HomeComponent, SelectComponent, TableComponent, TableTwoComponent, DataPickerComponent, DataPickerTwoComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CommonModule,
     NgIconsModule.withIcons({
       bootstrapCaretDownFill,
       bootstrapX,

@@ -1,0 +1,7 @@
+<div class="date-range-picker">
+  <button (click)="previousYearRange()">&lt;</button>
+  <div class="year-container">
+    <div *ngFor="let year of yearRange" [ngClass]="{'current-year': year === currentYear}">{{ year }}</div>
+  </div>
+  <button (click)="nextYearRange()">&gt;</button>
+</div>

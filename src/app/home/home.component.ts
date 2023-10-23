@@ -11,16 +11,15 @@ export class HomeComponent {
     {
       label: 'Subhra Roy',
       value: 1,
-    }
+    },
   ];
 
   data: any[] = [
     {
       label: 'Subhra',
-      value: 1
-    }
+      value: 1,
+    },
   ];
-
 
   selectValue!: any;
   className: string = '';
@@ -58,44 +57,41 @@ export class HomeComponent {
       status: 0,
     },
   ];
-  rowSelect: string[] = ['1', '5', '15', '25'];
+  rowSelect: any[] = [
+    {
+      label: '1',
+      value: 1,
+    },
+  ];
   isGreen: boolean = false;
 
-  header: any[] = [
+  tableColumns = [
     {
-      name: 'ID',
-      row: 'id',
+      name: '#',
+      selector: (row: any) => row.id,
       isSort: true,
-      isSearch: true,
-      width: '70px',
-    },
-    {
-      name: 'Name',
-      row: 'name',
-      isSort: true,
-      width: '150px',
     },
     {
       name: 'Status',
-      row: 'status',
-      conditionOperator: 'eq',
-      conditionValue: 1,
-      onTrue: "Active",
-      onFalse: "Deactive",
-      width: '150px',
+      selector: (row: any) => (row.status === 1 ? 'Active' : 'Deactive'),
+      classCondition: (row: any) =>
+        row.status === 1 ? 'bg-red-500 text-white' : 'bg-blue-500 text-blact',
     },
+  ];
+
+  header: any[] = [
     {
-      name: 'Email',
-      row: 'email',
-      conditionOperator: 'eq',
-      conditionValue: null,
-      onTrue: "-",
-      onFalse: 'row',
+      name: '#',
+      selector: (row: any) => row.id,
       isSort: true,
+      sortColumn: 'id',
+      width: '40px'
     },
     {
-      name: 'Mobile',
-      row: 'mobile',
+      name: 'Status',
+      selector: (row: any) => (row.status === 1 ? 'Active' : 'Deactive'),
+      classCondition: (row: any) =>
+        row.status === 1 ? 'bg-red-500 text-white' : 'bg-blue-500 text-blact',
     },
     {
       type: 'action',
@@ -106,6 +102,8 @@ export class HomeComponent {
           class: 'text-blue-500 border-b-2 border-blue-500',
           action: this.handleEdit.bind(this),
           row: 'id',
+          isIcon: true,
+          icon: 'bootstrapThreeDotsVertical',
         },
         {
           label: 'Delete',
@@ -124,14 +122,14 @@ export class HomeComponent {
   ];
 
   constructor(private studentService: StudentService) {
-    this.getStudentList();
+    // this.getStudentList();
     if (this.tableData && this.tableData.length) {
       // Update this.tableDataData state with mapped values
       const updatedthistableDataData = this.tableData?.length
-        ? this.tableData?.map(function (currentValue : any, Index: number) {
-          return { ...currentValue, ...{ id: Index + 1 } };
-        })
-        : "";
+        ? this.tableData?.map(function (currentValue: any, Index: number) {
+            return { ...currentValue, ...{ id: Index + 1 } };
+          })
+        : '';
       // Set updatedCategoryData to categoryData state
       this.tableData = updatedthistableDataData;
     } else {
@@ -145,7 +143,6 @@ export class HomeComponent {
   }
 
   getStudentList() {
-
     this.studentService.getStudentList().subscribe({
       next: (res: any) => {
         this.tableData = res.data;

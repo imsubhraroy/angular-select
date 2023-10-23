@@ -1,19 +1,11 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css'],
+  selector: 'app-table-two',
+  templateUrl: './table-two.component.html',
+  styleUrls: ['./table-two.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableTwoComponent {
   // Your data source
   @Input() data: any[] = [];
   @Input() className!: any;
@@ -36,7 +28,6 @@ export class TableComponent implements OnInit {
 
   //serch input
   inputText!: string;
-  screenWidth!: number;
 
   //Pagination
   itemsPerPage: number = 10;
@@ -59,24 +50,12 @@ export class TableComponent implements OnInit {
   // This is for data action
   secondData: any[] = [];
 
-  constructor(private cdRef: ChangeDetectorRef, private renderer: Renderer2) {
-    this.screenWidth = window.innerWidth;
-  }
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     setTimeout(() => {
       this.setTableData();
     }, 3000);
-  }
-
-  getDynamicWidth(): string {
-    if (this.screenWidth >= 1024) {
-      // Large screen: screenWidth - 260px
-      return `calc(${this.screenWidth}px - 330px)`;
-    } else {
-      // Small screen: screenWidth - 20px
-      return `calc(${this.screenWidth}px - 100px)`;
-    }
   }
 
   setTableData() {
@@ -89,14 +68,13 @@ export class TableComponent implements OnInit {
 
   //To catch the seleceted row value
   setValue = (value: any) => {
-    this.itemsPerPage = parseInt(value.value);
+    this.itemsPerPage = parseInt(value);
   };
 
   //TO diaplay data according item per page
   get displayedData(): any[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.secondData.slice(startIndex, endIndex);
+    const startIndex = 0;
+    return this.secondData.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   // To find total page number according to data and item per page
@@ -195,15 +173,14 @@ export class TableComponent implements OnInit {
     this.secondData = this.data;
     if (this.inputText !== '') {
       const text = this.inputText.toString().toLowerCase();
-      // Convert input text to lowercase for case-insensitive search
+       // Convert input text to lowercase for case-insensitive search
 
       // Filter the data based on each column
       this.secondData = this.secondData.filter(function (object: any) {
         for (const column in object) {
           if (Object.prototype.hasOwnProperty.call(object, column)) {
             if (
-              object[column] !== undefined &&
-              object[column] !== null &&
+              object[column] !== undefined && object[column] !== null &&
               object[column]?.toString().toLowerCase().includes(text)
             ) {
               return true; // If any field matches, return true to keep the object

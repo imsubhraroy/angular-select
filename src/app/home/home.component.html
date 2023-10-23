@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center h-10 w-64 ml-11 mt-11">
+<!-- <div class="flex items-center justify-center h-10 w-64 ml-11 mt-11">
   <div class="w-64">
     <app-select
       [setValue]="setValue"
@@ -13,8 +13,17 @@
   </div>
 </div>
 
-<div class="m-10 w-screen">
+<div class="m-10 w-[1400px]">
   <div class="overflow-x-auto">
+    <app-table-two [header]="header" [data]="tableData"></app-table-two>
     <app-table [data]="tableData" [header]="header" [rowSelect]="rowSelect" />
   </div>
+</div> -->
+<!-- <div class="bg-green-300 h-[40rem]">
+
+</div> -->
+<div class="p-10 w-96">
+  <app-data-picker [dateRange]="true" />
 </div>
+
+<!-- <app-data-picker-two /> -->

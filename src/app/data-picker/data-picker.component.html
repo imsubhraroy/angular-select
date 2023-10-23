@@ -1,0 +1,262 @@
+<div class="calendar-box">
+  <!-- <label for="dateInput">{{label}}</label> -->
+  <input
+    type="text"
+    id="dateInput"
+    [placeholder]="placeHolder"
+    (click)="showCalendar()"
+    readonly
+  />
+
+  <!-- Day -->
+  <div *ngIf="showDayModal" class="calendar" id="calendar">
+    <div class="header">
+      <button id="prevBtn" (click)="prevMonth()">
+        <svg
+          fill="#000000"
+          height="12px"
+          width="12px"
+          version="1.1"
+          id="XMLID_54_"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 24 24"
+          xml:space="preserve"
+        >
+          <g id="previous">
+            <g>
+              <polygon
+                points="17.2,23.7 5.4,12 17.2,0.3 18.5,1.7 8.4,12 18.5,22.3 		"
+              />
+            </g>
+          </g>
+        </svg>
+      </button>
+      <h2 id="monthYear" (click)="showMonth()">{{ currentMonthYear }}</h2>
+      <button id="nextBtn" (click)="nextMonth()">
+        <svg
+          fill="#000000"
+          version="1.1"
+          baseProfile="tiny"
+          id="Layer_1"
+          xmlns:x="&amp;ns_extend;"
+          xmlns:i="&amp;ns_ai;"
+          xmlns:graph="&amp;ns_graphs;"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+          width="12px"
+          height="12px"
+          viewBox="0 0 42 42"
+          xml:space="preserve"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <g id="SVGRepo_iconCarrier">
+            <polygon
+              fill-rule="evenodd"
+              points="11,38.32 28.609,21 11,3.68 13.72,1 34,21.01 13.72,41 "
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <div class="bars">
+      <span class="bar" *ngFor="let bar of bars"
+        ><abbr title="{{ bar.label }}">{{ bar.value }}</abbr></span
+      >
+    </div>
+    <!-- <div *ngIf="currentDay !== 1" class="days">
+      <div class="prevday" *ngFor="let previousMonthDay of previousMonthDays">
+        {{ previousMonthDay }}
+      </div>
+    </div> -->
+    <div class="days" id="daysContainer">
+      <div class="prevday" *ngFor="let previousMonthDay of previousMonthDays">
+        {{ previousMonthDay }}
+      </div>
+      <div
+        class="day"
+        [ngClass]="{
+          current: isCurrentDay(day),
+          selected: isSelectedDay(day),
+          maxDate: isMaxDate(day)
+        }"
+        *ngFor="let day of days; let i = index"
+        (click)="selectDay(day)"
+        [style.grid-column]="i === 0 ? (currentDay === 0 ? 7 : currentDay) : 0"
+      >
+        {{ day }}
+      </div>
+      <div
+        class="prevday"
+        *ngFor="let nextMonthDay of nextMonthDays; let i = index"
+        [style.grid-column]="i === 0 ? (lastDay === 0 ? 1 : lastDay + 1) : 0"
+      >
+        {{ nextMonthDay }}
+      </div>
+    </div>
+    <!-- <div class="prevdays">
+      <div
+        class="prevday"
+        *ngFor="let nextMonthDay of nextMonthDays; let i = index"
+        [style.grid-column]="i === 0 ? (lastDay === 0 ? 1 : lastDay + 1) : 0"
+      >
+        {{ nextMonthDay }}
+      </div>
+    </div> -->
+  </div>
+
+  <!-- Year -->
+
+  <div *ngIf="showYearModal" class="calendar" id="calendar">
+    <div class="header">
+      <button id="prevBtn" (click)="previousYearRange()">
+        <svg
+          fill="#000000"
+          height="12px"
+          width="12px"
+          version="1.1"
+          id="XMLID_54_"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 24 24"
+          xml:space="preserve"
+        >
+          <g id="previous">
+            <g>
+              <polygon
+                points="17.2,23.7 5.4,12 17.2,0.3 18.5,1.7 8.4,12 18.5,22.3 		"
+              />
+            </g>
+          </g>
+        </svg>
+      </button>
+      <h2 id="monthYear">Select Year</h2>
+      <button id="nextBtn" (click)="nextYearRange()">
+        <svg
+          fill="#000000"
+          version="1.1"
+          baseProfile="tiny"
+          id="Layer_1"
+          xmlns:x="&amp;ns_extend;"
+          xmlns:i="&amp;ns_ai;"
+          xmlns:graph="&amp;ns_graphs;"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+          width="12px"
+          height="12px"
+          viewBox="0 0 42 42"
+          xml:space="preserve"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <g id="SVGRepo_iconCarrier">
+            <polygon
+              fill-rule="evenodd"
+              points="11,38.32 28.609,21 11,3.68 13.72,1 34,21.01 13.72,41 "
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <div class="years" id="daysContainer">
+      <div
+        class="year"
+        *ngFor="let year of yearRange"
+        [ngClass]="{ current: isCurrentYear(year), maxDate: isMaxYear(year) }"
+        (click)="selectYear(year)"
+      >
+        {{ year }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Month -->
+
+  <div *ngIf="showMonthModal" class="calendar" id="calendar">
+    <div class="header">
+      <button id="prevBtn" (click)="prevYear()">
+        <svg
+          fill="#000000"
+          height="12px"
+          width="12px"
+          version="1.1"
+          id="XMLID_54_"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 24 24"
+          xml:space="preserve"
+        >
+          <g id="previous">
+            <g>
+              <polygon
+                points="17.2,23.7 5.4,12 17.2,0.3 18.5,1.7 8.4,12 18.5,22.3 		"
+              />
+            </g>
+          </g>
+        </svg>
+      </button>
+      <h2 id="monthYear" (click)="showYear()">{{ currentYear }}</h2>
+      <button id="nextBtn" (click)="nextYear()">
+        <svg
+          fill="#000000"
+          version="1.1"
+          baseProfile="tiny"
+          id="Layer_1"
+          xmlns:x="&amp;ns_extend;"
+          xmlns:i="&amp;ns_ai;"
+          xmlns:graph="&amp;ns_graphs;"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+          width="12px"
+          height="12px"
+          viewBox="0 0 42 42"
+          xml:space="preserve"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <g id="SVGRepo_iconCarrier">
+            <polygon
+              fill-rule="evenodd"
+              points="11,38.32 28.609,21 11,3.68 13.72,1 34,21.01 13.72,41 "
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <div class="months" id="monthsContainer">
+      <div
+        class="month"
+        [ngClass]="{
+          current: isCurrentMonth(month.value),
+          maxDate: isMaxMonth(month.value)
+        }"
+        *ngFor="let month of months"
+        (click)="selectMonth(month.value)"
+      >
+        {{ month.label }}
+      </div>
+    </div>
+  </div>
+</div>

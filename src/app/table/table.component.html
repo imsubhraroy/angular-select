@@ -30,9 +30,7 @@
         </div>
       </div>
 
-      <div
-        class="max-w-[290px] md:max-w-[670px] lg:max-w-[800px] xl:max-w-[1180px] mx-5 overflow-x-auto"
-      >
+      <div class="mx-5 overflow-x-auto" [style.width]="getDynamicWidth()">
         <table class="w-full">
           <thead class="bg-gray-50 border-b-2 border-gray-200">
             <tr>
@@ -65,19 +63,6 @@
                         <ng-icon name="bootstrapCaretDownFill"></ng-icon>
                       </ng-template>
                     </span>
-                    <!-- <div
-                          *ngIf="head.isSearch && head.isSort"
-                          class="w-0.5 bg-gray-600 h-4"
-                        ></div>
-                        <span
-                          *ngIf="head.isSearch"
-                          class="text-[12px] text-gray-900 font-bold cursor-pointer mt-1"
-                        >
-                          <ng-icon
-                            name="bootstrapSearch"
-                            (click)="setSearchValue(head.row)"
-                          ></ng-icon
-                        ></span> -->
                   </div>
                 </div>
               </th>
@@ -86,102 +71,19 @@
           <tbody
             class="divide-y divide-gray-100 border-b-2 border-gray-200 shadow"
           >
-            <tr
-              *ngFor="let item of displayedData; let i = index"
-              class="bg-white tabledata"
-            >
-              <!-- ... your row cells ... -->
-              <td *ngFor="let data of header" class="p-3 text-sm text-gray-700">
+            <tr *ngFor="let item of displayedData" class="bg-white tabledata">
+              <td
+                *ngFor="let column of header"
+                [class]="
+                  column.classCondition ? column.classCondition(item) : ''
+                "
+              >
                 <div
-                  *ngIf="data.type != 'action'; else action"
+                  *ngIf="column.type != 'action'; else action"
                   class="whitespace-nowrap overflow-ellipsis overflow-hidden w-28"
-                  [style.width]="data.width"
+                  [style.width]="column.width"
                 >
-                  <span
-                    *ngIf="data.conditionOperator == 'lt'; else gt"
-                    [class]="
-                      item[data.row] <= data.conditionClass
-                        ? data.onTrueClass
-                        : data.onFalseClass
-                    "
-                    >{{
-                      data.conditionValue !== undefined
-                        ? item[data.row] <= data.conditionValue
-                          ? data.onTrue == "row"
-                            ? item[data.row]
-                            : data.onTrue
-                          : data.onFalse == "row"
-                          ? item[data.row]
-                          : data.onFalse
-                        : item[data.row]
-                    }}</span
-                  >
-                  <ng-template #gt>
-                    <span
-                      *ngIf="data.conditionOperator == 'gt'; else eq"
-                      [class]="
-                        item[data.row] >= data.conditionClass
-                          ? data.onTrueClass
-                          : data.onFalseClass
-                      "
-                      >{{
-                        data.conditionValue !== undefined
-                          ? item[data.row] >= data.conditionValue
-                            ? data.onTrue == "row"
-                              ? item[data.row]
-                              : data.onTrue
-                            : data.onFalse == "row"
-                            ? item[data.row]
-                            : data.onFalse
-                          : item[data.row]
-                      }}</span
-                    >
-                  </ng-template>
-                  <ng-template #eq>
-                    <span
-                      *ngIf="data.conditionOperator == 'eq'; else neq"
-                      [class]="
-                        item[data.row] == data.conditionClass
-                          ? data.onTrueClass
-                          : data.onFalseClass
-                      "
-                      >{{
-                        data.conditionValue !== undefined
-                          ? item[data.row] == data.conditionValue
-                            ? data.onTrue == "row"
-                              ? item[data.row]
-                              : data.onTrue
-                            : data.onFalse == "row"
-                            ? item[data.row]
-                            : data.onFalse
-                          : item[data.row]
-                      }}</span
-                    >
-                  </ng-template>
-                  <ng-template #neq>
-                    <span
-                      *ngIf="data.conditionOperator == 'neq'; else default"
-                      [class]="
-                        item[data.row] != data.conditionClass
-                          ? data.onTrueClass
-                          : data.onFalseClass
-                      "
-                      >{{
-                        data.conditionValue !== undefined
-                          ? item[data.row] != data.conditionValue
-                            ? data.onTrue == "row"
-                              ? item[data.row]
-                              : data.onTrue
-                            : data.onFalse == "row"
-                            ? item[data.row]
-                            : data.onFalse
-                          : item[data.row]
-                      }}</span
-                    >
-                  </ng-template>
-                  <ng-template #default>
-                    <span [class]="data.class">{{ item[data.row] }}</span>
-                  </ng-template>
+                  {{ column.selector(item) }}
                 </div>
                 <ng-template #action>
                   <div class="relative pl-5">
@@ -192,19 +94,24 @@
                     ></span>
                     <div
                       class="absolute bg-gray-100 rounded-md p-3 -top-3 tableAction right-9 flex flex-col space-y-2 items-center justify-center cursor-pointer"
-                      [ngClass]="{
-                        'last-row-table-action':
-                          i === displayedData.length - 1 ||
-                          i === displayedData.length - 2
-                      }"
                       [style.display]="item.showAction ? 'block' : 'none'"
                     >
                       <div
-                        *ngFor="let action of data.actions"
+                        *ngFor="let action of column.actions"
                         class="{{ action.class }}"
                         (click)="action.action(item[action.row])"
                       >
-                        {{ action.label }}
+                        <span
+                          *ngIf="action.isIcon; else withOutIcon"
+                          [class]="action.class"
+                        >
+                          <ng-icon name="{{ action.icon }}"></ng-icon>
+                        </span>
+                        <ng-template #withOutIcon>
+                          <span [class]="action.class">
+                            {{ action.label }}
+                          </span></ng-template
+                        >
                       </div>
                     </div>
                   </div>
@@ -239,6 +146,12 @@
                   />
                 </div>
               </div> -->
+          <div class="pr-32">
+            <span class="text-gray-500 text-sm"
+              >Showing {{ displayedData.length }} of
+              {{ secondData.length }}</span
+            >
+          </div>
           <div
             class="flex items-center justify-center bg-white rounded-md border"
             *ngIf="displayedData.length > 0"

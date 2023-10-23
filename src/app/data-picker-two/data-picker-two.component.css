@@ -1,0 +1,14 @@
+.date-range-picker {
+  display: flex;
+  align-items: center;
+}
+
+.year-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.year-container .current-year {
+  font-weight: bold;
+}
