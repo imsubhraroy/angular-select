@@ -1,9 +1,12 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
+  Output,
   Renderer2,
+  ViewChild,
 } from '@angular/core';
 
 @Component({
@@ -18,17 +21,32 @@ export class DataPickerComponent {
   @Input() placeHolder: string = 'Select a date';
   @Input() label: string = 'DOB';
   @Input() dateRange: boolean = false;
+  @Output() setDate = new EventEmitter<any>();
+  @Input() selectedDate: Date | null = null;
+  @Input() labelText!: string;
+  @Input() mandatory: boolean = false;
+  @Input() isDisabled: boolean = false;
+  @Input() height!: string;
+
+  //Time
+  @Input() time: boolean = true;
+  selectedTime: boolean = false;
+  hourValue!: number;
+  hour!: number;
+  minuteValue!: number;
+  minute!: number;
+  terrestrialTime!: string;
 
   currentDay!: number;
   lastDay: number = 7;
   currentDate: Date = new Date();
   previousMonthDays: any = [];
   nextMonthDays: any = [];
-  selectedDate: Date | null = null;
   days: number[] = [];
   currentMonthYear: string = '';
+  currentMonth: string = '';
   selectedMonth!: number;
-  showDayModal: boolean = false;
+  showDayModal: boolean = true;
   showMonthModal: boolean = false;
   showYearModal: boolean = false;
   months: any = [
@@ -71,6 +89,20 @@ export class DataPickerComponent {
         this.startDate
       )}  -  ${this.formatDate(this.endDate)}`;
     }
+    const today = new Date();
+    this.hour = today.getHours();
+    this.terrestrialTime = this.hour >= 12 ? 'PM' : 'AM';
+    this.minute = today.getMinutes();
+    this.hourValue = this.hour;
+    this.minuteValue = this.minute;
+    setInterval(() => {
+      if (!this.selectedTime) {
+        const today = new Date();
+        this.hour = today.getHours();
+        this.terrestrialTime = this.hour >= 12 ? 'PM' : 'AM';
+        this.minute = today.getMinutes();
+      }
+    }, 1000);
   }
 
   //Show Whole month date base selected month and yesr
@@ -94,9 +126,10 @@ export class DataPickerComponent {
 
     this.currentYear = this.currentDate.getFullYear();
 
-    this.currentMonthYear = `${this.currentDate.toLocaleString('default', {
+    this.currentMonthYear = `${this.currentDate.getFullYear()}`;
+    this.currentMonth = `${this.currentDate.toLocaleString('default', {
       month: 'long',
-    })} ${this.currentDate.getFullYear()}`;
+    })}`;
 
     for (let day = 1; day <= lastDay.getDate(); day++) {
       this.days.push(day);
@@ -262,7 +295,9 @@ export class DataPickerComponent {
         } else {
           dateInput.value = `${this.formatDate(this.selectedDate)}`;
         }
-        this.showDayModal = false;
+        if (!this.time) {
+          this.showDayModal = false;
+        }
         this.renderCalendar();
       }
     } else {
@@ -294,8 +329,19 @@ export class DataPickerComponent {
       } else {
         dateInput.value = `${this.formatDate(this.selectedDate)}`;
       }
-      this.showDayModal = false;
+      if (!this.time) {
+        this.showDayModal = false;
+      }
       this.renderCalendar();
+    }
+    if (this.dateRange) {
+      const value = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+      };
+      this.setDate.emit(value);
+    } else {
+      this.setDate.emit(this.selectedDate);
     }
   }
 
@@ -440,6 +486,47 @@ export class DataPickerComponent {
     return range;
   }
 
+  //Time
+
+  setHour() {
+    this.selectedTime = true;
+    this.hourValue = this.hour;
+  }
+
+  setMinute() {
+    this.selectedTime = true;
+    this.minuteValue = this.minute;
+  }
+
+  setTime() {
+    this.selectedTime = true;
+    const dateInput = this.el.nativeElement.querySelector('#dateInput');
+    if (this.selectedDate) {
+      dateInput.value = '';
+      dateInput.value = ` ${this.formatDate(this.selectedDate)} ${
+        this.hourValue
+      } : ${this.minuteValue} ${this.terrestrialTime}`;
+      this.showDayModal = false;
+    }
+  }
+
+  reset() {
+    this.currentDate = new Date();
+    this.selectedDate = null;
+    const dateInput = this.el.nativeElement.querySelector('#dateInput');
+    dateInput.value = '';
+    if (this.time) {
+      this.selectedTime = false;
+      const today = new Date();
+      this.hour = today.getHours();
+      this.terrestrialTime = this.hour >= 12 ? 'PM' : 'AM';
+      this.minute = today.getMinutes();
+      this.hourValue = this.hour;
+      this.minuteValue = this.minute;
+    }
+    this.renderCalendar();
+  }
+
   //*Outside Close
 
   @HostListener('document:click', ['$event'])
@@ -448,6 +535,12 @@ export class DataPickerComponent {
       if (this.showDayModal) {
         this.showDayModal = false;
       }
+      // if (this.showMonthModal) {
+      //   this.showMonthModal = false;
+      // }
+      // if (this.showYearModal) {
+      //   this.showYearModal = false;
+      // }
     }
   }
 

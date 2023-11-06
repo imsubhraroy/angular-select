@@ -19,6 +19,18 @@ export class HomeComponent {
       label: 'Subhra',
       value: 1,
     },
+    {
+      label: 'Sushanto',
+      value: 1,
+    },
+    {
+      label: 'Rizwan',
+      value: 1,
+    },
+    {
+      label: 'Sandipan',
+      value: 1,
+    },
   ];
 
   selectValue!: any;

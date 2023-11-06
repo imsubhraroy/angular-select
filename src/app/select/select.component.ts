@@ -22,6 +22,7 @@ export class SelectComponent {
   @Input() labelText!: string;
   @Input() mandatory: boolean = false;
   @Input() optionLineBreack: boolean = true;
+  @Input() isDisabled: boolean = false;
   @Input() setValue!: (parameter: any) => void;
   @ViewChild('targetDiv') targetDiv!: ElementRef;
   @ViewChild('containerDiv') containerDiv!: ElementRef;

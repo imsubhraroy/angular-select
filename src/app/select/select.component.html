@@ -15,6 +15,7 @@
       [readonly]="isReadOnly"
       (input)="setSearch()"
       [class]="height"
+      [disabled]="isDisabled"
     />
     <div
       *ngIf="isDropDown; else beforeFocus"

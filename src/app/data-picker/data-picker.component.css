@@ -13,6 +13,25 @@ body {
   min-height: 100vh;
 } */
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  display: none;
+}
+
+/* Show the increment and decrement buttons on focus */
+input[type="number"]:focus::-webkit-inner-spin-button,
+input[type="number"]:focus::-webkit-outer-spin-button {
+  display: block;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none;
+  outline: none;
+}
+
 abbr {
   border: none;
   text-decoration: none;
@@ -44,6 +63,7 @@ abbr {
   margin-top: 10px;
 }
 
+/* Day Model Div */
 .header {
   display: flex;
   justify-content: space-between;
@@ -76,12 +96,36 @@ abbr {
   padding-right: 16px;
 }
 
+/* day Model Div where Month and year Showing */
 #monthYear {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
 }
 
+/* day Model Div where Month and year Showing */
+.topMonthYear {
+  display: flex;
+}
+
+/* Day Model Header Month Dropdown */
+.monthDropDown {
+  display: flex;
+  justify-content: left;
+  padding-right: 7px;
+}
+
+/* Day Model Header Year Dropdown */
+.yearDropDown {
+  display: flex;
+  justify-content: right;
+  /* padding-right: 15px; */
+}
+
+/* Day Model Header Dropdown Icon */
+.dropDownIcon {
+  padding-top: 5px;
+}
 /* Day Css */
 
 .days {
@@ -103,13 +147,6 @@ abbr {
   cursor: pointer;
   font-weight: 500;
   grid-column: span 1;
-}
-
-.prevdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  /* gap: 2px; */
-  padding: 0px 10px 10px 10px;
 }
 
 .prevday {
@@ -220,17 +257,133 @@ abbr {
   border-radius: 0.25rem;
 }
 
-.maxDate{
+.maxDate {
   color: #888;
 }
 
-
+/* Input box */
 #dateInput {
   width: 100%;
-  padding: 10px;
-  border: 2px solid #ccc;
+  padding: 8px 8px 8px 18px;
+  border: 2px solid #e2e8f0;
   border-radius: 5px;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
   font-size: 16px;
   outline: none;
   cursor: pointer;
+}
+
+#dateInput:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity));
+}
+
+/* Time Div */
+.timeDiv {
+  height: 64px;
+  margin-left: 12px;
+  margin-right: 12px;
+  border-top-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+}
+
+/* Inside Time Div Next div */
+.timeDivTwo {
+  padding-top: 0.75rem /* 12px */;
+  padding-bottom: 0.75rem /* 12px */;
+  display: flex;
+  gap: 0.5rem /* 8px */;
+  align-items: center;
+  justify-content: left;
+}
+
+.resetButton {
+  padding-top: 0.25rem /* 4px */;
+  padding-bottom: 0.25rem /* 4px */;
+  padding-left: 0.5rem /* 8px */;
+  padding-right: 0.5rem /* 8px */;
+  border-radius: 0.375rem /* 6px */;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
+.resetButton:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity));
+}
+
+/* Inside time div in which main time showing */
+.mainTime {
+  margin-left: 0.75rem /* 12px */;
+  margin-right: 0.75rem /* 12px */;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hour {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.hourInput {
+  width: 1.5rem /* 24px */;
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  padding-left: 0.25rem /* 4px */;
+  padding-right: 0.25rem /* 4px */;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-style: none;
+}
+
+.hourInput:focus {
+  width: 2.5rem /* 40px */;
+}
+
+.minute {
+  font-weight: 600;
+  font-size: 16px;
+  padding-left: 0.25rem /* 4px */;
+  padding-right: 0.25rem /* 4px */;
+}
+
+.minuteInput {
+  width: 1.25rem /* 20px */;
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-style: none;
+}
+
+.minuteInput:focus {
+  width: 2rem /* 32px */;
+}
+
+.terestrialTime {
+  width: 1.25rem /* 20px */;
+}
+
+.okButton {
+  margin-right: 1rem /* 16px */;
+  margin-left: 20px;
+  padding-top: 0.25rem /* 4px */;
+  padding-bottom: 0.25rem /* 4px */;
+  padding-left: 0.5rem /* 8px */;
+  padding-right: 0.5rem /* 8px */;
+  border-radius: 0.375rem /* 6px */;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
+.okButton:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 64 175 / var(--tw-bg-opacity));
 }
